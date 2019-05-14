@@ -1,9 +1,9 @@
 import React from 'react'
 import { SiteAdminAlert } from '../../site-admin/SiteAdminAlert'
-import { asyncComponent } from '../../util/asyncComponent'
+import { lazyComponent } from '../../util/lazyComponent'
 import { UserSettingsAreaRoute } from './UserSettingsArea'
 
-const SettingsArea = asyncComponent(() => import('../../settings/SettingsArea'), 'SettingsArea')
+const SettingsArea = lazyComponent(() => import('../../settings/SettingsArea'), 'SettingsArea')
 
 export const userSettingsAreaRoutes: ReadonlyArray<UserSettingsAreaRoute> = [
     {
@@ -31,28 +31,28 @@ export const userSettingsAreaRoutes: ReadonlyArray<UserSettingsAreaRoute> = [
     {
         path: '/profile',
         exact: true,
-        render: asyncComponent(() => import('./profile/UserSettingsProfilePage'), 'UserSettingsProfilePage'),
+        render: lazyComponent(() => import('./profile/UserSettingsProfilePage'), 'UserSettingsProfilePage'),
     },
     {
         path: '/password',
         exact: true,
-        render: asyncComponent(() => import('./auth/UserSettingsPasswordPage'), 'UserSettingsPasswordPage'),
+        render: lazyComponent(() => import('./auth/UserSettingsPasswordPage'), 'UserSettingsPasswordPage'),
     },
     {
         path: '/emails',
         exact: true,
-        render: asyncComponent(() => import('./emails/UserSettingsEmailsPage'), 'UserSettingsEmailsPage'),
+        render: lazyComponent(() => import('./emails/UserSettingsEmailsPage'), 'UserSettingsEmailsPage'),
     },
     {
         path: '/tokens',
         exact: true,
-        render: asyncComponent(() => import('./accessTokens/UserSettingsTokensPage'), 'UserSettingsTokensPage'),
+        render: lazyComponent(() => import('./accessTokens/UserSettingsTokensPage'), 'UserSettingsTokensPage'),
         condition: () => window.context.accessTokensAllow !== 'none',
     },
     {
         path: '/tokens/new',
         exact: true,
-        render: asyncComponent(
+        render: lazyComponent(
             () => import('./accessTokens/UserSettingsCreateAccessTokenPage'),
             'UserSettingsCreateAccessTokenPage'
         ),

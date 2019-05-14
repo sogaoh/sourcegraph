@@ -1,10 +1,10 @@
 import React from 'react'
 import { Redirect } from 'react-router'
 import { LayoutRouteProps, routes } from '../routes'
-import { asyncComponent } from '../util/asyncComponent'
+import { lazyComponent } from '../util/lazyComponent'
 import { welcomeAreaRoutes } from './dotcom/welcome/routes'
 
-const WelcomeArea = asyncComponent(() => import('./dotcom/welcome/WelcomeArea'), 'WelcomeArea')
+const WelcomeArea = lazyComponent(() => import('./dotcom/welcome/WelcomeArea'), 'WelcomeArea')
 
 export const enterpriseRoutes: ReadonlyArray<LayoutRouteProps> = [
     {
@@ -12,7 +12,7 @@ export const enterpriseRoutes: ReadonlyArray<LayoutRouteProps> = [
         // of just dumping them on a sign-in page).
         path: '/subscriptions/new',
         exact: true,
-        render: asyncComponent(
+        render: lazyComponent(
             () => import('./user/productSubscriptions/NewProductSubscriptionPageOrRedirectUser'),
             'NewProductSubscriptionPageOrRedirectUser'
         ),

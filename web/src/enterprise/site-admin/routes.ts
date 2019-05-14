@@ -1,12 +1,12 @@
 import { siteAdminAreaRoutes } from '../../site-admin/routes'
 import { SiteAdminAreaRoute } from '../../site-admin/SiteAdminArea'
-import { asyncComponent } from '../../util/asyncComponent'
+import { lazyComponent } from '../../util/lazyComponent'
 
 export const enterpriseSiteAdminAreaRoutes: ReadonlyArray<SiteAdminAreaRoute> = [
     ...siteAdminAreaRoutes,
     {
         path: '/license',
-        render: asyncComponent(
+        render: lazyComponent(
             () => import('./productSubscription/SiteAdminProductSubscriptionPage'),
             'SiteAdminProductSubscriptionPage'
         ),
@@ -14,7 +14,7 @@ export const enterpriseSiteAdminAreaRoutes: ReadonlyArray<SiteAdminAreaRoute> = 
     },
     {
         path: '/dotcom/customers',
-        render: asyncComponent(
+        render: lazyComponent(
             () => import('./dotcom/customers/SiteAdminCustomersPage'),
             'SiteAdminProductCustomersPage'
         ),
@@ -22,7 +22,7 @@ export const enterpriseSiteAdminAreaRoutes: ReadonlyArray<SiteAdminAreaRoute> = 
     },
     {
         path: '/dotcom/product/subscriptions/new',
-        render: asyncComponent(
+        render: lazyComponent(
             () => import('./dotcom/productSubscriptions/SiteAdminCreateProductSubscriptionPage'),
             'SiteAdminCreateProductSubscriptionPage'
         ),
@@ -30,7 +30,7 @@ export const enterpriseSiteAdminAreaRoutes: ReadonlyArray<SiteAdminAreaRoute> = 
     },
     {
         path: '/dotcom/product/subscriptions/:subscriptionUUID',
-        render: asyncComponent(
+        render: lazyComponent(
             () => import('./dotcom/productSubscriptions/SiteAdminProductSubscriptionPage'),
             'SiteAdminProductSubscriptionPage'
         ),
@@ -38,7 +38,7 @@ export const enterpriseSiteAdminAreaRoutes: ReadonlyArray<SiteAdminAreaRoute> = 
     },
     {
         path: '/dotcom/product/subscriptions',
-        render: asyncComponent(
+        render: lazyComponent(
             () => import('./dotcom/productSubscriptions/SiteAdminProductSubscriptionsPage'),
             'SiteAdminProductSubscriptionsPage'
         ),
@@ -46,7 +46,7 @@ export const enterpriseSiteAdminAreaRoutes: ReadonlyArray<SiteAdminAreaRoute> = 
     },
     {
         path: '/dotcom/product/licenses',
-        render: asyncComponent(
+        render: lazyComponent(
             () => import('./dotcom/productSubscriptions/SiteAdminProductLicensesPage'),
             'SiteAdminProductLicensesPage'
         ),
@@ -54,7 +54,7 @@ export const enterpriseSiteAdminAreaRoutes: ReadonlyArray<SiteAdminAreaRoute> = 
     },
     {
         path: '/auth/providers',
-        render: asyncComponent(
+        render: lazyComponent(
             () => import('./SiteAdminAuthenticationProvidersPage'),
             'SiteAdminAuthenticationProvidersPage'
         ),
@@ -62,12 +62,12 @@ export const enterpriseSiteAdminAreaRoutes: ReadonlyArray<SiteAdminAreaRoute> = 
     },
     {
         path: '/auth/external-accounts',
-        render: asyncComponent(() => import('./SiteAdminExternalAccountsPage'), 'SiteAdminExternalAccountsPage'),
+        render: lazyComponent(() => import('./SiteAdminExternalAccountsPage'), 'SiteAdminExternalAccountsPage'),
         exact: true,
     },
     {
         path: '/registry/extensions',
-        render: asyncComponent(() => import('./SiteAdminRegistryExtensionsPage'), 'SiteAdminRegistryExtensionsPage'),
+        render: lazyComponent(() => import('./SiteAdminRegistryExtensionsPage'), 'SiteAdminRegistryExtensionsPage'),
         exact: true,
     },
 ]

@@ -1,10 +1,10 @@
 import { ExploreSectionDescriptor } from '../../explore/ExploreArea'
 import { exploreSections } from '../../explore/exploreSections'
-import { asyncComponent } from '../../util/asyncComponent'
+import { lazyComponent } from '../../util/lazyComponent'
 
 export const enterpriseExploreSections: ReadonlyArray<ExploreSectionDescriptor> = [
     {
-        render: asyncComponent(
+        render: lazyComponent(
             () => import('../extensions/explore/ExtensionsExploreSection'),
             'ExtensionsExploreSection'
         ),

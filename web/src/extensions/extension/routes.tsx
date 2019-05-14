@@ -1,9 +1,9 @@
 import React from 'react'
 import { eventLogger } from '../../tracking/eventLogger'
-import { asyncComponent } from '../../util/asyncComponent'
+import { lazyComponent } from '../../util/lazyComponent'
 import { ExtensionAreaRoute } from './ExtensionArea'
 
-const RegistryExtensionOverviewPage = asyncComponent(
+const RegistryExtensionOverviewPage = lazyComponent(
     () => import('./RegistryExtensionOverviewPage'),
     'RegistryExtensionOverviewPage'
 )
@@ -18,12 +18,12 @@ export const extensionAreaRoutes: ReadonlyArray<ExtensionAreaRoute> = [
     {
         path: `/-/manifest`,
         exact: true,
-        render: asyncComponent(() => import('./RegistryExtensionManifestPage'), 'RegistryExtensionManifestPage'),
+        render: lazyComponent(() => import('./RegistryExtensionManifestPage'), 'RegistryExtensionManifestPage'),
     },
     {
         path: `/-/contributions`,
         exact: true,
-        render: asyncComponent(
+        render: lazyComponent(
             () => import('./RegistryExtensionContributionsPage'),
             'RegistryExtensionContributionsPage'
         ),

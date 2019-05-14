@@ -1,12 +1,12 @@
 import { ExtensionsAreaRoute } from '../../extensions/ExtensionsArea'
 import { extensionsAreaRoutes } from '../../extensions/routes'
-import { asyncComponent } from '../../util/asyncComponent'
+import { lazyComponent } from '../../util/lazyComponent'
 
 export const enterpriseExtensionsAreaRoutes: ReadonlyArray<ExtensionsAreaRoute> = [
     extensionsAreaRoutes[0],
     {
         path: `/registry`,
-        render: asyncComponent(() => import('./registry/RegistryArea'), 'RegistryArea'),
+        render: lazyComponent(() => import('./registry/RegistryArea'), 'RegistryArea'),
     },
     ...extensionsAreaRoutes.slice(1),
 ]

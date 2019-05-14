@@ -1,6 +1,6 @@
 import { userSettingsAreaRoutes } from '../../../user/settings/routes'
 import { UserSettingsAreaRoute } from '../../../user/settings/UserSettingsArea'
-import { asyncComponent } from '../../../util/asyncComponent'
+import { lazyComponent } from '../../../util/lazyComponent'
 import { SHOW_BUSINESS_FEATURES } from '../../dotcom/productSubscriptions/features'
 import { authExp } from '../../site-admin/SiteAdminAuthenticationProvidersPage'
 
@@ -9,13 +9,13 @@ export const enterpriseUserSettingsAreaRoutes: ReadonlyArray<UserSettingsAreaRou
     {
         path: '/external-accounts',
         exact: true,
-        render: asyncComponent(() => import('./UserSettingsExternalAccountsPage'), 'UserSettingsExternalAccountsPage'),
+        render: lazyComponent(() => import('./UserSettingsExternalAccountsPage'), 'UserSettingsExternalAccountsPage'),
         condition: () => authExp,
     },
     {
         path: '/subscriptions/new',
         exact: true,
-        render: asyncComponent(
+        render: lazyComponent(
             () => import('../productSubscriptions/UserSubscriptionsNewProductSubscriptionPage'),
             'UserSubscriptionsNewProductSubscriptionPage'
         ),
@@ -24,7 +24,7 @@ export const enterpriseUserSettingsAreaRoutes: ReadonlyArray<UserSettingsAreaRou
     {
         path: '/subscriptions/:subscriptionUUID',
         exact: true,
-        render: asyncComponent(
+        render: lazyComponent(
             () => import('../productSubscriptions/UserSubscriptionsProductSubscriptionPage'),
             'UserSubscriptionsProductSubscriptionPage'
         ),
@@ -33,7 +33,7 @@ export const enterpriseUserSettingsAreaRoutes: ReadonlyArray<UserSettingsAreaRou
     {
         path: '/subscriptions/:subscriptionUUID/edit',
         exact: true,
-        render: asyncComponent(
+        render: lazyComponent(
             () => import('../productSubscriptions/UserSubscriptionsEditProductSubscriptionPage'),
             'UserSubscriptionsEditProductSubscriptionPage'
         ),
@@ -42,7 +42,7 @@ export const enterpriseUserSettingsAreaRoutes: ReadonlyArray<UserSettingsAreaRou
     {
         path: '/subscriptions',
         exact: true,
-        render: asyncComponent(
+        render: lazyComponent(
             () => import('../productSubscriptions/UserSubscriptionsProductSubscriptionsPage'),
             'UserSubscriptionsProductSubscriptionsPage'
         ),

@@ -1,33 +1,30 @@
-import { asyncComponent } from '../util/asyncComponent'
+import { lazyComponent } from '../util/lazyComponent'
 import { ExploreSectionDescriptor } from './ExploreArea'
 
 export const exploreSections: ReadonlyArray<ExploreSectionDescriptor> = [
     {
-        render: asyncComponent(
+        render: lazyComponent(
             () => import('../extensions/explore/ExtensionViewsExploreSection'),
             'ExtensionViewsExploreSection'
         ),
     },
     {
-        render: asyncComponent(
+        render: lazyComponent(
             () => import('../integrations/explore/IntegrationsExploreSection'),
             'IntegrationsExploreSection'
         ),
     },
     {
-        render: asyncComponent(
-            () => import('../repo/explore/RepositoriesExploreSection'),
-            'RepositoriesExploreSection'
-        ),
+        render: lazyComponent(() => import('../repo/explore/RepositoriesExploreSection'), 'RepositoriesExploreSection'),
     },
     {
-        render: asyncComponent(
+        render: lazyComponent(
             () => import('../search/saved-queries/explore/SavedSearchesExploreSection'),
             'SavedSearchesExploreSection'
         ),
     },
     {
-        render: asyncComponent(
+        render: lazyComponent(
             () => import('../usageStatistics/explore/SiteUsageExploreSection'),
             'SiteUsageExploreSection'
         ),
