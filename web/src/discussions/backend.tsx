@@ -58,6 +58,9 @@ const discussionThreadFieldsFragment = gql`
                 }
             }
         }
+        settings
+        status
+        url
         inlineURL
         createdAt
         updatedAt
@@ -154,7 +157,7 @@ export function fetchDiscussionThreads(opts: {
         opts
     ).pipe(
         map(({ data, errors }) => {
-            if (!data || !data.discussionThreads) {
+            if (!data || !data.discussionThreads || !data.discussionThreads.nodes) {
                 throw createAggregateError(errors)
             }
             return data.discussionThreads
@@ -226,6 +229,43 @@ export function addCommentToThread(threadID: GQL.ID, contents: string): Observab
             return data.discussions.addCommentToThread
         })
     )
+}
+
+/**
+ * Updates an existing discussion thread.
+ *
+ * @return Observable that emits the updated discussion thread and its comments.
+ */
+export async function updateThread(input: GQL.IDiscussionThreadUpdateInput): Promise<GQL.IDiscussionThread> {
+    return mutateGraphQL(
+        gql`
+            mutation UpdateThread($input: DiscussionThreadUpdateInput!) {
+                discussions {
+                    updateThread(input: $input) {
+                        ...DiscussionThreadFields
+                        comments {
+                            totalCount
+                            nodes {
+                                ...DiscussionCommentFields
+                            }
+                        }
+                    }
+                }
+            }
+            ${discussionThreadFieldsFragment}
+            ${discussionCommentFieldsFragment}
+        `,
+        { input }
+    )
+        .pipe(
+            map(({ data, errors }) => {
+                if (!data || !data.discussions || !data.discussions.updateThread) {
+                    throw createAggregateError(errors)
+                }
+                return data.discussions.updateThread
+            })
+        )
+        .toPromise()
 }
 
 /**

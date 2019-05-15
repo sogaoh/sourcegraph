@@ -194,6 +194,7 @@ func (r *discussionsMutationResolver) CreateThread(ctx context.Context, args *st
 		Title    *string
 		Contents string
 		Target   *discussionThreadTargetInput
+		Settings *string
 	}
 }) (*discussionThreadResolver, error) {
 	if args.Input.Title == nil {
@@ -232,6 +233,7 @@ func (r *discussionsMutationResolver) CreateThread(ctx context.Context, args *st
 	newThread := &types.DiscussionThread{
 		AuthorUserID: currentUser.user.ID,
 		Title:        *args.Input.Title,
+		Settings:     args.Input.Settings,
 	}
 	thread, err := db.DiscussionThreads.Create(ctx, newThread)
 	if err != nil {
@@ -267,6 +269,8 @@ func (r *discussionsMutationResolver) CreateThread(ctx context.Context, args *st
 func (r *discussionsMutationResolver) UpdateThread(ctx context.Context, args *struct {
 	Input *struct {
 		ThreadID graphql.ID
+		Title    *string
+		Settings *string
 		Archive  *bool
 		Delete   *bool
 	}
@@ -294,8 +298,10 @@ func (r *discussionsMutationResolver) UpdateThread(ctx context.Context, args *st
 		return nil, err
 	}
 	thread, err := db.DiscussionThreads.Update(ctx, threadID, &db.DiscussionThreadsUpdateOptions{
-		Archive: args.Input.Archive,
-		Delete:  delete,
+		Title:    args.Input.Title,
+		Settings: args.Input.Settings,
+		Archive:  args.Input.Archive,
+		Delete:   delete,
 	})
 	if err != nil {
 		return nil, errors.Wrap(err, "DiscussionThreads.Update")
@@ -712,6 +718,24 @@ func (d *discussionThreadResolver) Target(ctx context.Context) (*discussionThrea
 	return &discussionThreadTargetResolver{unrecognized: true}, nil
 }
 
+func (d *discussionThreadResolver) Settings(ctx context.Context) string {
+	if settings := d.t.Settings; settings != nil {
+		return *settings
+	}
+	return "{}"
+}
+
+func (d *discussionThreadResolver) Status() string {
+	if d.t.ArchivedAt == nil {
+		return "OPEN"
+	}
+	return "CLOSED"
+}
+
+func (d *discussionThreadResolver) URL(ctx context.Context) string {
+	return fmt.Sprintf("/threads/%s", d.ID())
+}
+
 func (d *discussionThreadResolver) InlineURL(ctx context.Context) (*string, error) {
 	url, err := discussions.URLToInlineThread(ctx, d.t)
 	if err != nil || url == nil {
@@ -811,7 +835,6 @@ func viewerCanUseDiscussions(ctx context.Context) error {
 	if mockViewerCanUseDiscussions != nil {
 		return mockViewerCanUseDiscussions()
 	}
-
 	merged, err := viewerFinalSettings(ctx)
 	if err != nil {
 		return err

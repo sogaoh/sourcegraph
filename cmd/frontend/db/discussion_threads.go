@@ -78,11 +78,13 @@ func (t *discussionThreads) Create(ctx context.Context, newThread *types.Discuss
 	err := dbconn.Global.QueryRowContext(ctx, `INSERT INTO discussion_threads(
 		author_user_id,
 		title,
+		settings,
 		created_at,
 		updated_at
-	) VALUES ($1, $2, $3, $4) RETURNING id`,
+	) VALUES ($1, $2, $3, $4, $5) RETURNING id`,
 		newThread.AuthorUserID,
 		newThread.Title,
+		newThread.Settings,
 		newThread.CreatedAt,
 		newThread.UpdatedAt,
 	).Scan(&newThread.ID)
@@ -106,6 +108,12 @@ func (t *discussionThreads) Get(ctx context.Context, threadID int64) (*types.Dis
 }
 
 type DiscussionThreadsUpdateOptions struct {
+	// Title, when non-nil, updates the thread's title.
+	Title *string
+
+	// Settings, when non-nil, updates the thread's settings.
+	Settings *string
+
 	// Archive, when non-nil, specifies whether the thread is archived or not.
 	Archive *bool
 
@@ -126,6 +134,18 @@ func (t *discussionThreads) Update(ctx context.Context, threadID int64, opts *Di
 	// TODO(slimsag:discussions): should be in a transaction
 
 	anyUpdate := false
+	if opts.Title != nil {
+		anyUpdate = true
+		if _, err := dbconn.Global.ExecContext(ctx, "UPDATE discussion_threads SET title=$1 WHERE id=$2 AND deleted_at IS NULL", opts.Title, threadID); err != nil {
+			return nil, err
+		}
+	}
+	if opts.Settings != nil {
+		anyUpdate = true
+		if _, err := dbconn.Global.ExecContext(ctx, "UPDATE discussion_threads SET settings=$1 WHERE id=$2 AND deleted_at IS NULL", opts.Settings, threadID); err != nil {
+			return nil, err
+		}
+	}
 	if opts.Archive != nil {
 		anyUpdate = true
 		var archivedAt *time.Time
@@ -170,6 +190,10 @@ func (t *discussionThreads) Update(ctx context.Context, threadID int64, opts *Di
 type DiscussionThreadsListOptions struct {
 	// LimitOffset specifies SQL LIMIT and OFFSET counts. It may be nil (no limit / offset).
 	*LimitOffset
+
+	// OpenStatus, when non-nil, specifies that only threads that are open (true) or closed (false)
+	// should be returned.
+	OpenStatus *bool
 
 	// TitleQuery, when non-nil, specifies that only threads whose title
 	// matches this string should be returned.
@@ -267,6 +291,18 @@ func (opts *DiscussionThreadsListOptions) SetFromQuery(ctx context.Context, quer
 
 	var reported bool
 	operators := map[string]func(value string){
+		// syntax: "is:open"/"is:closed"
+		"is": func(value string) {
+			switch value {
+			case "open":
+				v := true
+				opts.OpenStatus = &v
+			case "closed":
+				v := false
+				opts.OpenStatus = &v
+			}
+		},
+
 		// syntax: `title:"some title"` or "title:sometitle"
 		// Primarily exists for the negation mode.
 		"title": func(value string) {
@@ -476,6 +512,10 @@ func (t *discussionThreads) fuzzyFilterThreads(opts *DiscussionThreadsListOption
 func (*discussionThreads) getListSQL(opts *DiscussionThreadsListOptions) (conds []*sqlf.Query) {
 	conds = []*sqlf.Query{sqlf.Sprintf("TRUE")}
 	conds = append(conds, sqlf.Sprintf("deleted_at IS NULL"))
+	if opts.OpenStatus != nil {
+		// TODO!(sqs): rename archived_at to closed_at?
+		conds = append(conds, sqlf.Sprintf("(archived_at IS NULL) = %v", *opts.OpenStatus))
+	}
 	if opts.TitleQuery != nil && strings.TrimSpace(*opts.TitleQuery) != "" {
 		conds = append(conds, sqlf.Sprintf("title ILIKE %v", extraFuzzy(*opts.TitleQuery)))
 	}
@@ -549,6 +589,7 @@ func (t *discussionThreads) getBySQL(ctx context.Context, query string, args ...
 			t.id,
 			t.author_user_id,
 			t.title,
+			t.settings,
 			t.created_at,
 			t.archived_at,
 			t.updated_at
@@ -565,6 +606,7 @@ func (t *discussionThreads) getBySQL(ctx context.Context, query string, args ...
 			&thread.ID,
 			&thread.AuthorUserID,
 			&thread.Title,
+			&thread.Settings,
 			&thread.CreatedAt,
 			&thread.ArchivedAt,
 			&thread.UpdatedAt,
