@@ -304,6 +304,32 @@ export function updateComment(input: GQL.IDiscussionCommentUpdateInput): Observa
 }
 
 /**
+ * Add a target to an existing thread.
+ *
+ * @return Observable that emits voids upon success.
+ */
+export function addTargetToThread(args: GQL.IAddTargetToThreadOnDiscussionsMutationArguments): Observable<void> {
+    return mutateGraphQL(
+        gql`
+            mutation AddTargetToThread($threadID: ID!, $target: DiscussionThreadTargetInput!) {
+                discussions {
+                    addTargetToThread(threadID: $threadID, target: $target) {
+                        __typename
+                    }
+                }
+            }
+        `,
+        args
+    ).pipe(
+        map(({ data, errors }) => {
+            if (!data || !data.discussions || !data.discussions.addTargetToThread) {
+                throw createAggregateError(errors)
+            }
+        })
+    )
+}
+
+/**
  * Renders Markdown to HTML.
  *
  * @return Observable that emits the HTML string, which is already sanitized and escaped and thus is always safe to render.

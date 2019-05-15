@@ -733,7 +733,7 @@ func (d *discussionThreadResolver) Status() string {
 }
 
 func (d *discussionThreadResolver) URL(ctx context.Context) string {
-	return fmt.Sprintf("/threads/%s", d.ID())
+	return fmt.Sprintf("/threads/%s", d.IDWithoutKind())
 }
 
 func (d *discussionThreadResolver) InlineURL(ctx context.Context) (*string, error) {

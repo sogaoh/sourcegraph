@@ -10,20 +10,19 @@ import React from 'react'
 import { CodeExcerpt } from '../../../../../../shared/src/components/CodeExcerpt'
 import { displayRepoName } from '../../../../../../shared/src/components/RepoFileLink'
 import { ExtensionsControllerProps } from '../../../../../../shared/src/extensions/controller'
+import * as GQL from '../../../../../../shared/src/graphql/schema'
 import { fetchHighlightedFileLines } from '../../../../repo/backend'
 import { SourceItemDiscussion } from './SourceItemDiscussion'
 
-export interface ThreadSourceItem {
-    repo: string
-    path: string
-    line: number
-    status: 'open' | 'closed' | 'ignored'
+export interface ThreadSourceItem extends GQL.IDiscussionThreadTargetRepo {
     updatedAt: string
     updatedBy: string
     commentsCount: number
+    status: 'open' | 'closed' | 'ignored'
 }
 
-interface Props extends ThreadSourceItem, ExtensionsControllerProps {
+interface Props extends ExtensionsControllerProps {
+    item: ThreadSourceItem
     className?: string
     isLightTheme: boolean
     history: H.History
@@ -40,18 +39,12 @@ const STATUS_ICONS: Record<ThreadSourceItem['status'], React.ComponentType<{ cla
  * A source item in a thread that refers to a text document location.
  */
 export const TextDocumentLocationSourceItem: React.FunctionComponent<Props> = ({
-    repo,
-    path = '',
-    line,
-    status,
-    updatedAt,
-    updatedBy,
-    commentsCount,
+    item,
     className = '',
     isLightTheme,
     ...props
 }) => {
-    const Icon = STATUS_ICONS[status]
+    const Icon = STATUS_ICONS[item.status]
     return (
         <div className={`card border ${className}`}>
             <div className="card-header d-flex align-items-start">
@@ -66,48 +59,61 @@ export const TextDocumentLocationSourceItem: React.FunctionComponent<Props> = ({
                 <div className="flex-1">
                     <h3 className="d-flex align-items-center mb-0">
                         <a
-                            href={`https://${repo}/pull/${line}`}
+                            href="TODO!(sqs)"
                             target="_blank"
                             // tslint:disable-next-line:jsx-ban-props
                             style={{ color: 'var(--body-color)' }}
                         >
-                            {path ? (
+                            {item.path ? (
                                 <>
-                                    <span className="font-weight-normal">{displayRepoName(repo)}</span> &mdash;{' '}
-                                    <code>{path}</code>
+                                    <span className="font-weight-normal">{displayRepoName(item.repository.name)}</span>{' '}
+                                    &mdash; <code>{item.path}</code>
                                 </>
                             ) : (
-                                displayRepoName(repo)
+                                displayRepoName(item.repository.name)
                             )}
                         </a>
                     </h3>
                     <small className="text-muted">
-                        #{line} updated {formatDistance(Date.parse(updatedAt), Date.now())} ago by{' '}
-                        <strong>{updatedBy}</strong>
+                        Changed {formatDistance(Date.parse(item.updatedAt), Date.now())} ago by{' '}
+                        <strong>{item.updatedBy}</strong>
                     </small>
                 </div>
                 <div>
-                    {commentsCount > 0 && (
+                    {item.commentsCount > 0 && (
                         <ul className="list-inline d-flex align-items-center">
                             <li className="list-inline-item">
                                 <small className="text-muted">
-                                    <MessageOutlineIcon className="icon-inline" /> {commentsCount}
+                                    <MessageOutlineIcon className="icon-inline" /> {item.commentsCount}
                                 </small>
                             </li>
                         </ul>
                     )}
                 </div>
             </div>
-            <CodeExcerpt
-                repoName={repo}
-                commitID="master" // TODO!(sqs)
-                filePath={path}
-                context={3}
-                highlightRanges={[{ line, character: 0, highlightLength: 25 }]}
-                className="p-1"
-                isLightTheme={isLightTheme}
-                fetchHighlightedFileLines={fetchHighlightedFileLines}
-            />
+            {item.path && (
+                <CodeExcerpt
+                    repoName={item.repository.name}
+                    commitID="master" // TODO!(sqs)
+                    filePath={item.path}
+                    context={3}
+                    highlightRanges={
+                        item.selection
+                            ? [
+                                  {
+                                      line: item.selection.startLine,
+                                      character: item.selection.startCharacter,
+                                      highlightLength:
+                                          item.selection.endCharacter - item.selection.startCharacter || 10, // TODO!(sqs): hack to avoid having non-highlighted lines
+                                  },
+                              ]
+                            : []
+                    }
+                    className="p-1"
+                    isLightTheme={isLightTheme}
+                    fetchHighlightedFileLines={fetchHighlightedFileLines}
+                />
+            )}
             <SourceItemDiscussion {...props} className="border-top" />
         </div>
     )

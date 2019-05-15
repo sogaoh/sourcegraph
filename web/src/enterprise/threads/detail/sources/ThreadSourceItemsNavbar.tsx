@@ -7,13 +7,12 @@ import React, { useState } from 'react'
 import { MultilineTextField } from '../../../../../../shared/src/components/multilineTextField/MultilineTextField'
 import * as GQL from '../../../../../../shared/src/graphql/schema'
 import { ListHeaderQueryLinks } from '../../components/ListHeaderQueryLinks'
-import { ThreadSourceItem } from './TextDocumentLocationSourceItem'
 import { ThreadSourceItemsListFilter } from './ThreadSourceItemsListFilter'
 import { ThreadSourceItemsListHeaderFilterButtonDropdown } from './ThreadSourceItemsListHeaderFilterButtonDropdown'
 
 interface Props {
     thread: Pick<GQL.IDiscussionThread, 'title' | 'id'>
-    items: { nodes: ThreadSourceItem[] }
+    items: GQL.IDiscussionThreadTargetConnection
 
     /** The thread source items query. */
     query: string

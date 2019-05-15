@@ -14,7 +14,7 @@ import { queryWithReplacementText } from './query'
  * To enable this, run `localStorage.codemodExp=true;location.reload()` in your browser's JavaScript
  * console.
  */
-const USE_CODEMOD = localStorage.getItem('codemodExp') !== null
+export const USE_CODEMOD = localStorage.getItem('codemodExp') !== null
 
 export const CODEMOD_PANEL_VIEW_ID = 'codemod'
 

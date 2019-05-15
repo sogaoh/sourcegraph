@@ -2,11 +2,12 @@ import { LoadingSpinner } from '@sourcegraph/react-loading-spinner'
 import H from 'history'
 import React, { useMemo, useState } from 'react'
 import { of } from 'rxjs'
+import { map } from 'rxjs/operators'
 import { WithStickyTop } from '../../../../../../shared/src/components/withStickyTop/WithStickyTop'
 import { ExtensionsControllerProps } from '../../../../../../shared/src/extensions/controller'
 import { gql } from '../../../../../../shared/src/graphql/graphql'
 import * as GQL from '../../../../../../shared/src/graphql/schema'
-import { asError, ErrorLike, isErrorLike } from '../../../../../../shared/src/util/errors'
+import { asError, createAggregateError, ErrorLike, isErrorLike } from '../../../../../../shared/src/util/errors'
 import { queryGraphQL } from '../../../../backend/graphql'
 import { ThreadSettings } from '../../settings'
 import { TextDocumentLocationSourceItem, ThreadSourceItem } from './TextDocumentLocationSourceItem'
@@ -114,18 +115,41 @@ const DATA: ThreadSourceItem[] = [
     },
 ]
 
-const querySourceItems = (threadID: string) =>
+const querySourceItems = (threadID: GQL.ID): Promise<GQL.IDiscussionThreadTargetConnection> =>
     queryGraphQL(
         gql`
             query ThreadSourceItems($threadID: ID!) {
-                discussionThreads(threadID: $threadID) {
-                    totalCount
-                    nodes {
-                        ...DiscussionThreadFields
-                        comments {
-                            totalCount
+                node(id: $threadID) {
+                    __typename
+                    ... on DiscussionThread {
+                        targets {
                             nodes {
-                                ...DiscussionCommentFields
+                                __typename
+                                ... on DiscussionThreadTargetRepo {
+                                    repository {
+                                        name
+                                    }
+                                    path
+                                    branch {
+                                        displayName
+                                    }
+                                    revision {
+                                        displayName
+                                    }
+                                    selection {
+                                        startLine
+                                        startCharacter
+                                        endLine
+                                        endCharacter
+                                        linesBefore
+                                        lines
+                                        linesAfter
+                                    }
+                                }
+                            }
+                            totalCount
+                            pageInfo {
+                                hasNextPage
                             }
                         }
                     }
@@ -133,19 +157,22 @@ const querySourceItems = (threadID: string) =>
             }
         `,
         { threadID }
-    ).pipe(
-        map(({ data, errors }) => {
-            if (
-                !data ||
-                !data.discussionThreads ||
-                !data.discussionThreads.nodes ||
-                data.discussionThreads.nodes.length !== 1
-            ) {
-                throw createAggregateError(errors)
-            }
-            return data.discussionThreads.nodes[0]
-        })
     )
+        .pipe(
+            map(({ data, errors }) => {
+                if (
+                    !data ||
+                    !data.node ||
+                    data.node.__typename !== 'DiscussionThread' ||
+                    !data.node.targets ||
+                    !data.node.targets.nodes
+                ) {
+                    throw createAggregateError(errors)
+                }
+                return data.node.targets
+            })
+        )
+        .toPromise()
 
 interface Props extends ExtensionsControllerProps {
     thread: Pick<GQL.IDiscussionThread, 'id' | 'title'>
@@ -177,13 +204,13 @@ export const ThreadSourceItemsList: React.FunctionComponent<Props> = ({
     extensionsController,
 }) => {
     const [itemsOrError, setItemsOrError] = useState<
-        typeof LOADING | { nodes: typeof DATA; totalCount: number } | ErrorLike
+        typeof LOADING | GQL.IDiscussionThreadTargetConnection | ErrorLike
     >(LOADING)
 
-    // tslint:disable-next-line: no-floating-promises because querySourceItems never throws
+    // tslint:disable-next-line: no-floating-promises
     useMemo(async () => {
         try {
-            setItemsOrError(await querySourceItems(thread.id).toPromise())
+            setItemsOrError(await querySourceItems(thread.id))
         } catch (err) {
             setItemsOrError(asError(err))
         }
@@ -218,11 +245,11 @@ export const ThreadSourceItemsList: React.FunctionComponent<Props> = ({
                         <p className="p-2 mb-0 text-muted">No source items found.</p>
                     ) : (
                         <ul className="list-unstyled">
-                            {itemsOrError.nodes.map((data, i) => (
+                            {itemsOrError.nodes.map((item, i) => (
                                 <li key={i}>
                                     <TextDocumentLocationSourceItem
                                         key={i}
-                                        {...data}
+                                        item={{ ...DATA[i], ...item }}
                                         className="my-3"
                                         isLightTheme={isLightTheme}
                                         history={history}

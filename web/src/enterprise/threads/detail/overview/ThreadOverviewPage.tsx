@@ -33,7 +33,11 @@ export const ThreadOverviewPage: React.FunctionComponent<Props> = ({
     <div className="thread-overview-page">
         <div className="row flex-wrap-reverse">
             <div className="col-md-9 mb-3">
-                <DiscussionsThread {...props} threadID={thread.id} className="border border-top-0 rounded" />
+                <DiscussionsThread
+                    {...props}
+                    threadIDWithoutKind={thread.idWithoutKind}
+                    className="border border-top-0 rounded"
+                />
             </div>
             <div className="col-md-3 mb-3">
                 {threadSettings.createPullRequests ? (
