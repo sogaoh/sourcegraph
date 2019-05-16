@@ -84,25 +84,25 @@ export class Resizable<C extends React.ReactElement<any>> extends React.PureComp
 
     public render(): React.ReactNode {
         return (
-            <aside
+            <div
                 className={`resizable resizable--${this.props.handlePosition} ${this.props.className || ''}`}
                 ref={this.setContainerRef}
                 // tslint:disable-next-line jsx-ban-props
                 style={{ [this.props.handlePosition === 'right' ? 'width' : 'height']: `${this.state.size}px` }}
             >
-                <aside
+                <div
                     className={`resizable__ghost ${this.state.resizing ? 'resizable__ghost--resizing' : ''}`}
                     onMouseMove={this.onMouseMove}
                     onMouseUp={this.onMouseUp}
                 />
                 {this.props.element}
-                <aside
+                <div
                     className={`resizable__handle resizable__handle--${this.props.handlePosition} ${
                         this.state.resizing ? 'resizable__handle--resizing' : ''
                     }`}
                     onMouseDown={this.onMouseDown}
                 />
-            </aside>
+            </div>
         )
     }
 

@@ -27,7 +27,7 @@ export const ThreadAreaSidebar: React.FunctionComponent<Props> = ({
     areaURL,
     className = '',
 }) => (
-    <aside className={`thread-area-sidebar d-flex flex-column ${className}`}>
+    <div className={`thread-area-sidebar d-flex flex-column ${className}`}>
         <ul className="nav flex-column">
             <li className="nav-item">
                 <NavLink
@@ -102,5 +102,5 @@ export const ThreadAreaSidebar: React.FunctionComponent<Props> = ({
                 </NavLink>
             </li>
         </ul>
-    </aside>
+    </div>
 )

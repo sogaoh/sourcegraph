@@ -91,12 +91,12 @@ export class PopoverButton extends React.PureComponent<PopoverButtonProps, Popov
                 trigger=""
             >
                 {isOpen && <Shortcut ordered={['Escape']} onMatch={this.toggleVisibility} ignoreInput={true} />}
-                <aside ref={this.setPopoverRef}>{this.props.popoverElement}</aside>
+                <div ref={this.setPopoverRef}>{this.props.popoverElement}</div>
             </Popover>
         )
 
         return (
-            <aside
+            <div
                 className={`popover-button2 ${isOpen ? 'popover-button2--open' : ''} ${this.props.className || ''} ${
                     this.props.link ? 'popover-button2__container' : 'popover-button2__btn popover-button2__anchor'
                 }`}
@@ -115,12 +115,12 @@ export class PopoverButton extends React.PureComponent<PopoverButtonProps, Popov
                     {!this.props.link && <MenuDownIcon className="icon-inline popover-button2__icon" />}
                 </LinkOrSpan>
                 {this.props.link ? (
-                    <aside className="popover-button2__anchor">
-                        <aside onClick={this.toggleVisibility}>
+                    <div className="popover-button2__anchor">
+                        <div onClick={this.toggleVisibility}>
                             <MenuDownIcon className="icon-inline popover-button2__icon popover-button2__icon--outside" />
-                        </aside>
+                        </div>
                         {popoverAnchor}
-                    </aside>
+                    </div>
                 ) : (
                     popoverAnchor
                 )}
@@ -129,7 +129,7 @@ export class PopoverButton extends React.PureComponent<PopoverButtonProps, Popov
                     this.props.toggleVisibilityKeybinding.map((keybinding, i) => (
                         <Shortcut key={i} {...keybinding} onMatch={this.toggleVisibility} />
                     ))}
-            </aside>
+            </div>
         )
     }
 

@@ -4,7 +4,6 @@ import { Route, RouteComponentProps, Switch } from 'react-router'
 import { ExtensionsControllerProps } from '../../../../../shared/src/extensions/controller'
 import { HeroPage } from '../../../components/HeroPage'
 import { registerDiscussionsContributions } from '../../../repo/blob/discussions/contributions'
-import { RepoHeaderContributionsLifecycleProps } from '../../../repo/RepoHeader'
 import { ThreadArea } from '../detail/ThreadArea'
 import { NewThreadPage } from '../new/NewThreadPage'
 import { ThreadKind } from '../util'
@@ -27,7 +26,6 @@ export interface ThreadsAreaProps
     extends Pick<ThreadsAreaContext, Exclude<keyof ThreadsAreaContext, 'kind'>>,
         Partial<Pick<ThreadsAreaContext, 'kind'>>,
         RouteComponentProps<{}>,
-        RepoHeaderContributionsLifecycleProps,
         ExtensionsControllerProps {}
 
 /**

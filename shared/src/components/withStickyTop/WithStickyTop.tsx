@@ -58,7 +58,7 @@ export const WithStickyTop: React.FunctionComponent<{
 
     return (
         <>
-            <aside
+            <div
                 className="with-sticky-top__sentinel-top"
                 ref={setSentinelTop}
                 // tslint:disable-next-line: jsx-ban-props

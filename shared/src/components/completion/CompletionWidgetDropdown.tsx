@@ -83,7 +83,7 @@ export const CompletionWidgetDropdown: React.FunctionComponent<CompletionWidgetD
                                     } ${listItemClassName}`,
                                 })}
                             >
-                                <aside className="completion-widget-dropdown__item-text">
+                                <div className="completion-widget-dropdown__item-text">
                                     {item.description ? (
                                         <>
                                             <strong>{item.label}</strong>&nbsp; {item.description}
@@ -91,7 +91,7 @@ export const CompletionWidgetDropdown: React.FunctionComponent<CompletionWidgetD
                                     ) : (
                                         item.label
                                     )}
-                                </aside>
+                                </div>
                             </li>
                         ))
                     )}

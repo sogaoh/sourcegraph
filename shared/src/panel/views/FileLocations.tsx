@@ -16,15 +16,15 @@ import { propertyIsDefined } from '../../util/types'
 import { parseRepoURI, toPrettyBlobURL } from '../../util/url'
 
 export const FileLocationsError: React.FunctionComponent<{ error: ErrorLike }> = ({ error }) => (
-    <aside className="file-locations__error alert alert-danger m-2">
+    <div className="file-locations__error alert alert-danger m-2">
         <AlertCircleIcon className="icon-inline" /> Error getting locations: {upperFirst(error.message)}
-    </aside>
+    </div>
 )
 
 export const FileLocationsNotFound: React.FunctionComponent = () => (
-    <aside className="file-locations__not-found m-2">
+    <div className="file-locations__not-found m-2">
         <MapSearchIcon className="icon-inline" /> No locations found
-    </aside>
+    </div>
 )
 
 interface Props extends SettingsCascadeProps {
@@ -128,7 +128,7 @@ export class FileLocations extends React.PureComponent<Props, State> {
         }
 
         return (
-            <aside className={`file-locations ${this.props.className || ''}`}>
+            <div className={`file-locations ${this.props.className || ''}`}>
                 <VirtualList
                     itemsToShow={this.state.itemsToShow}
                     onShowMoreItems={this.onShowMoreItems}
@@ -147,7 +147,7 @@ export class FileLocations extends React.PureComponent<Props, State> {
                         />
                     ))}
                 />
-            </aside>
+            </div>
         )
     }
 

@@ -26,7 +26,6 @@ export const ThreadsListItem: React.FunctionComponent<Props> = ({ thread, locati
             <ThreadStatusIcon thread={thread} className={`small mr-2 mt-1`} />
             <div className="flex-1">
                 <h3 className="d-flex align-items-center mb-0">
-                    {/* tslint:disable-next-line:jsx-ban-props */}
                     <Link to={thread.url} className="text-body">
                         {thread.title}
                     </Link>

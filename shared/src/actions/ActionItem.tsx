@@ -217,9 +217,9 @@ export class ActionItem extends React.PureComponent<ActionItemProps, State> {
             >
                 {content}
                 {showLoadingSpinner && (
-                    <aside className="action-item__loader">
+                    <div className="action-item__loader">
                         <LoadingSpinner className={this.props.iconClassName} />
-                    </aside>
+                    </div>
                 )}
             </LinkOrButton>
         )

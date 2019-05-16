@@ -66,24 +66,22 @@ export class ExtensionStatus extends React.PureComponent<Props, State> {
 
     public render(): JSX.Element | null {
         return (
-            <aside className="extension-status card border-0">
-                <aside className="card-header">Active extensions (DEBUG)</aside>
+            <div className="extension-status card border-0">
+                <div className="card-header">Active extensions (DEBUG)</div>
                 {this.state.extensionsOrError ? (
                     isErrorLike(this.state.extensionsOrError) ? (
-                        <aside className="alert alert-danger mb-0 rounded-0">
-                            {this.state.extensionsOrError.message}
-                        </aside>
+                        <div className="alert alert-danger mb-0 rounded-0">{this.state.extensionsOrError.message}</div>
                     ) : this.state.extensionsOrError.length > 0 ? (
-                        <aside className="list-group list-group-flush">
+                        <div className="list-group list-group-flush">
                             {this.state.extensionsOrError.map(({ id }, i) => (
-                                <aside
+                                <div
                                     key={i}
                                     className="list-group-item py-2 d-flex align-items-center justify-content-between"
                                 >
                                     <this.props.link id={id} />
-                                </aside>
+                                </div>
                             ))}
-                        </aside>
+                        </div>
                     ) : (
                         <span className="card-body">No active extensions.</span>
                     )
@@ -92,15 +90,15 @@ export class ExtensionStatus extends React.PureComponent<Props, State> {
                         <LoadingSpinner className="icon-inline" /> Loading extensions...
                     </span>
                 )}
-                <aside className="card-body border-top">
+                <div className="card-body border-top">
                     <h6>Sideload extension</h6>
                     {this.state.sideloadedExtensionURL ? (
-                        <aside>
+                        <div>
                             <p>
                                 <span>Load from: </span>
                                 <Link to={this.state.sideloadedExtensionURL}>{this.state.sideloadedExtensionURL}</Link>
                             </p>
-                            <aside>
+                            <div>
                                 <button
                                     className="btn btn-sm btn-primary mr-1"
                                     onClick={this.setSideloadedExtensionURL}
@@ -110,22 +108,22 @@ export class ExtensionStatus extends React.PureComponent<Props, State> {
                                 <button className="btn btn-sm btn-danger" onClick={this.clearSideloadedExtensionURL}>
                                     Clear
                                 </button>
-                            </aside>
-                        </aside>
+                            </div>
+                        </div>
                     ) : (
-                        <aside>
+                        <div>
                             <p>
                                 <span>No sideloaded extension</span>
                             </p>
-                            <aside>
+                            <div>
                                 <button className="btn btn-sm btn-primary" onClick={this.setSideloadedExtensionURL}>
                                     Load extension
                                 </button>
-                            </aside>
-                        </aside>
+                            </div>
+                        </div>
                     )}
-                </aside>
-            </aside>
+                </div>
+            </div>
         )
     }
 

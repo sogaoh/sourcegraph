@@ -37,7 +37,7 @@ const threadTooltip = (thread: DiscussionThreadWithStatus): string => {
 export const threadStatusInfo = (
     thread: DiscussionThreadWithStatus
 ): {
-    color: 'success' | 'danger'
+    color: ThreadStatusColor
     icon: React.ComponentType<{ className?: string }>
     text: string
     tooltip: string

@@ -44,6 +44,7 @@ const (
 	routeRepoGraph      = "repo-graph"
 	routeChecks         = "checks"
 	routeCodemods       = "codemods"
+	routeChanges        = "changes"
 	routeThreads        = "threads"
 	routeTree           = "tree"
 	routeBlob           = "blob"
@@ -146,6 +147,7 @@ func newRouter() *mux.Router {
 	r.PathPrefix("/threads").Methods("GET").Name(routeThreads)
 	r.PathPrefix("/checks").Methods("GET").Name(routeChecks)
 	r.PathPrefix("/codemods").Methods("GET").Name(routeCodemods)
+	r.PathPrefix("/change").Methods("GET").Name(routeChanges)
 
 	// Legacy redirects
 	r.Path("/login").Methods("GET").Name(routeLegacyLogin)
@@ -217,6 +219,7 @@ func initRouter() {
 	router.Get(routeThreads).Handler(handler(serveBasicPageString("Threads - Sourcegraph")))
 	router.Get(routeChecks).Handler(handler(serveBasicPageString("Checks - Sourcegraph")))
 	router.Get(routeCodemods).Handler(handler(serveBasicPageString("Codemods - Sourcegraph")))
+	router.Get(routeChanges).Handler(handler(serveBasicPageString("Changes - Sourcegraph")))
 	router.Get(routeSearchScope).Handler(handler(serveBasicPageString("Search scope - Sourcegraph")))
 	router.Get(routeSurvey).Handler(handler(serveBasicPageString("Survey - Sourcegraph")))
 	router.Get(routeSurveyScore).Handler(handler(serveBasicPageString("Survey - Sourcegraph")))

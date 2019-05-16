@@ -117,16 +117,16 @@ export class ActivationDropdown extends React.PureComponent<Props, State> {
                     </span>
                 </DropdownToggle>
                 <DropdownMenu className={'activation-dropdown'} right={true}>
-                    <aside className="activation-dropdown-background" />
-                    <aside className="activation-dropdown-header">
+                    <div className="activation-dropdown-background" />
+                    <div className="activation-dropdown-header">
                         <h3 className="activation-dropdown-header__title">Get started with Sourcegraph</h3>
                         <p className="activation-dropdown-header__copy">
                             Welcome to Sourcegraph! Complete the steps below to finish setting up your instance.
                         </p>
-                    </aside>
+                    </div>
                     {this.props.activation && this.props.activation.completed ? (
                         this.props.activation.steps.map(step => (
-                            <aside
+                            <div
                                 key={step.id}
                                 className="activation-dropdown-item dropdown-item"
                                 onClick={this.toggleIsOpen}
@@ -139,12 +139,12 @@ export class ActivationDropdown extends React.PureComponent<Props, State> {
                                         false
                                     }
                                 />
-                            </aside>
+                            </div>
                         ))
                     ) : (
-                        <aside className="activation-dropdown-button__loader">
+                        <div className="activation-dropdown-button__loader">
                             <LoadingSpinner className="icon-inline" />
-                        </aside>
+                        </div>
                     )}
                 </DropdownMenu>
             </ButtonDropdown>

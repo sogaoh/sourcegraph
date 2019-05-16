@@ -1,5 +1,4 @@
 import * as H from 'history'
-import TimelineTextIcon from 'mdi-react/TimelineTextIcon'
 import * as React from 'react'
 import { Subscription } from 'rxjs'
 import { ContributableMenu } from '../../../shared/src/api/protocol'
@@ -10,10 +9,12 @@ import { ExtensionsControllerProps } from '../../../shared/src/extensions/contro
 import * as GQL from '../../../shared/src/graphql/schema'
 import { PlatformContextProps } from '../../../shared/src/platform/context'
 import { SettingsCascadeProps } from '../../../shared/src/settings/settings'
+import { LinkWithIconOnlyTooltip } from '../components/LinkWithIconOnlyTooltip'
 import { WebActionsNavItems, WebCommandListPopoverButton } from '../components/shared'
 import { isDiscussionsEnabled } from '../discussions'
+import { ChangesIcon } from '../enterprise/changes/icons'
 import { ThreadsNavItem } from '../enterprise/threads/global/nav/ThreadsNavItem'
-import { ChecksIcon, CodemodIcon, ThreadsIcon } from '../enterprise/threads/icons'
+import { ChecksIcon } from '../enterprise/threads/icons'
 import { KeybindingsProps } from '../keybindings'
 import { ThemePreferenceProps, ThemeProps } from '../theme'
 import { EventLoggerProps } from '../tracking/eventLogger'
@@ -76,9 +77,27 @@ export class NavLinks extends React.PureComponent<Props> {
                     !!this.props.authenticatedUser ||
                     this.props.location.pathname !== '/welcome') && (
                     // TODO!(sqs): only show these on enterprise
-                    <li className="nav-item">
-                        <ThreadsNavItem />
-                    </li>
+                    <>
+                        <li className="nav-item">
+                            <ThreadsNavItem />
+                        </li>
+                        <li className="nav-item">
+                            <LinkWithIconOnlyTooltip
+                                to="/checks"
+                                text="Checks"
+                                icon={ChecksIcon}
+                                className="nav-link btn btn-link text-decoration-none"
+                            />
+                        </li>
+                        <li className="nav-item">
+                            <LinkWithIconOnlyTooltip
+                                to="/changes"
+                                text="Changes"
+                                icon={ChangesIcon}
+                                className="nav-link btn btn-link text-decoration-none"
+                            />
+                        </li>
+                    </>
                 )}
                 {!this.props.authenticatedUser && (
                     <>

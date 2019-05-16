@@ -18,7 +18,7 @@ interface Props {
     /** The threads query. */
     query: string
 
-    /** Called when the threads changes. */
+    /** Called when the threads query changes. */
     onQueryChange: (query: string) => void
 
     history: H.History

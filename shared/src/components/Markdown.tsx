@@ -8,7 +8,7 @@ interface Props {
 }
 
 export const Markdown: React.FunctionComponent<Props> = (props: Props) => (
-    <aside
+    <div
         ref={props.refFn}
         className={`markdown ${props.className}`}
         dangerouslySetInnerHTML={{ __html: props.dangerousInnerHTML }}

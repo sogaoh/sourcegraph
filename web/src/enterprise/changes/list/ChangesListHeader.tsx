@@ -4,30 +4,24 @@ import SettingsIcon from 'mdi-react/SettingsIcon'
 import TagOutlineIcon from 'mdi-react/TagOutlineIcon'
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { nounForThreadKind, ThreadKind } from '../util'
-import { ThreadsListFilter } from './ThreadsListFilter'
 
 interface Props {
-    kind: ThreadKind
-
-    /** The threads query. */
+    /** The changes query. */
     query: string
 
-    /** Called when the threads query changes. */
+    /** Called when the query changes. */
     onQueryChange: (query: string) => void
 
     location: H.Location
+    className?: string
 }
 
 /**
- * The header for the list of threads.
+ * The header for the list of changes.
  */
-export const ThreadsListHeader: React.FunctionComponent<Props> = ({ kind, query, onQueryChange, location }) => (
-    <div className="d-flex justify-content-between align-items-start">
+export const ChangesListHeader: React.FunctionComponent<Props> = ({ location, className = '' }) => (
+    <div className={`d-flex justify-content-between align-items-start ${className}`}>
         <div className="flex-1 mr-5 d-flex">
-            <div className="flex-1 mb-3 mr-2">
-                <ThreadsListFilter value={query} onChange={onQueryChange} />
-            </div>
             <div className="btn-group mb-3 mr-4" role="group">
                 <Link to={`${location.pathname}/-/manage/activity`} className="btn btn-outline-link">
                     <HistoryIcon className="icon-inline" /> Activity
@@ -40,10 +34,6 @@ export const ThreadsListHeader: React.FunctionComponent<Props> = ({ kind, query,
         <div className="btn-group" role="group">
             <Link to={`${location.pathname}/-/manage`} className="btn btn-outline-link">
                 <SettingsIcon className="icon-inline" /> Manage{' '}
-            </Link>
-            {/* tslint:disable-next-line: jsx-ban-props to avoid its width changing between checks/codemods */}
-            <Link to={`${location.pathname}/-/new`} className="btn btn-success" style={{ minWidth: '118px' }}>
-                New {nounForThreadKind(kind)}
             </Link>
         </div>
     </div>
