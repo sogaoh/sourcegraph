@@ -21,7 +21,9 @@ export const ChangesListPage: React.FunctionComponent<Props> = props => {
 
     return (
         <div className="changes-overview-page mt-3 container">
-            <h1 className="h4">Changes</h1>
+            <h1 className="h4">
+                Changes <span className="text-muted">to...</span>
+            </h1>
             <ChangesList {...props} query={query} onQueryChange={onQueryChange} />
         </div>
     )
