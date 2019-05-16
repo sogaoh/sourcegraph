@@ -4,7 +4,6 @@ import CommentCheckIcon from 'mdi-react/CommentCheckIcon'
 import CommentRemoveIcon from 'mdi-react/CommentRemoveIcon'
 import FlagVariantIcon from 'mdi-react/FlagVariantIcon'
 import LinkIcon from 'mdi-react/LinkIcon'
-import SecurityLockIcon from 'mdi-react/SecurityLockIcon'
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { Observable } from 'rxjs'
@@ -41,6 +40,8 @@ interface Props extends ExtensionsControllerProps {
      * button clicks.
      */
     onDelete?: (comment: GQL.IDiscussionComment) => Observable<void>
+
+    className?: string
 }
 
 interface State {
@@ -68,7 +69,8 @@ export class DiscussionsComment extends React.PureComponent<Props> {
 
         return (
             <div
-                className={`discussions-comment${isTargeted ? ' discussions-comment--targeted' : ''}`}
+                className={`discussions-comment${isTargeted ? ' discussions-comment--targeted' : ''} ${this.props
+                    .className || ''}`}
                 ref={isTargeted ? this.setScrollToElement : undefined}
             >
                 <div className="discussions-comment__top-area">
@@ -108,38 +110,33 @@ export class DiscussionsComment extends React.PureComponent<Props> {
                                 <FlagVariantIcon className="icon-inline" />
                             </button>
                         )}
-                        {(comment.canClearReports || comment.reports.length > 0 || comment.canDelete) && (
-                            <span className="discussions-comment__admin">
-                                <SecurityLockIcon className="icon-inline icon-sm" data-tooltip="Admin area" />
-                                {comment.reports.length > 0 && (
-                                    <>
-                                        <span
-                                            className="ml-1 mr-1 discussions-comment__reports"
-                                            data-tooltip={comment.reports.join('\n\n')}
-                                        >
-                                            {comment.reports.length} reports
-                                        </span>
-                                        {comment.canClearReports && onClearReports && (
-                                            <button
-                                                className="btn btn-link btn-sm discussions-comment__toolbar-btn"
-                                                data-tooltip="Clear reports / mark as good message"
-                                                onClick={this.onClearReportsClick}
-                                            >
-                                                <CommentCheckIcon className="icon-inline" />
-                                            </button>
-                                        )}
-                                    </>
-                                )}
-                                {comment.canDelete && onDelete && (
+                        {comment.reports.length > 0 && (
+                            <>
+                                <span
+                                    className="ml-1 mr-1 discussions-comment__reports"
+                                    data-tooltip={comment.reports.join('\n\n')}
+                                >
+                                    {comment.reports.length} reports
+                                </span>
+                                {comment.canClearReports && onClearReports && (
                                     <button
                                         className="btn btn-link btn-sm discussions-comment__toolbar-btn"
-                                        data-tooltip="Delete comment forever"
-                                        onClick={this.onDeleteClick}
+                                        data-tooltip="Clear reports / mark as good message"
+                                        onClick={this.onClearReportsClick}
                                     >
-                                        <CommentRemoveIcon className="icon-inline" />
+                                        <CommentCheckIcon className="icon-inline" />
                                     </button>
                                 )}
-                            </span>
+                            </>
+                        )}
+                        {comment.canDelete && onDelete && (
+                            <button
+                                className="btn btn-link btn-sm discussions-comment__toolbar-btn"
+                                data-tooltip="Delete comment forever"
+                                onClick={this.onDeleteClick}
+                            >
+                                <CommentRemoveIcon className="icon-inline" />
+                            </button>
                         )}
                     </span>
                 </div>

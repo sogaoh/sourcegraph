@@ -2,11 +2,12 @@ import SettingsIcon from 'mdi-react/SettingsIcon'
 import SourcePullIcon from 'mdi-react/SourcePullIcon'
 import ViewListIcon from 'mdi-react/ViewListIcon'
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { ChatIcon } from '../../../../../../shared/src/components/icons'
 import { ExtensionsControllerProps } from '../../../../../../shared/src/extensions/controller'
 import * as GQL from '../../../../../../shared/src/graphql/schema'
 import { ThreadSettings } from '../../settings'
+import { ThreadStatusItemsProgressBar } from '../activity/ThreadStatusItemsProgressBar'
 
 interface Props extends ExtensionsControllerProps {
     thread: GQL.IDiscussionThread
@@ -49,6 +50,19 @@ export const ThreadAreaSidebar: React.FunctionComponent<Props> = ({
                     <ViewListIcon className="icon-inline" /> Sources{' '}
                     <span className="badge badge-secondary">{thread.targets.totalCount}</span>
                 </NavLink>
+                <ul className="nav flex-column thread-area-sidebar__subnav">
+                    <li className="nav-item">
+                        <NavLink
+                            to={`${areaURL}/sources?q=1`}
+                            className="thread-area-sidebar__nav-link nav-link"
+                            activeClassName="active thread-area-sidebar__nav-link--active"
+                            exact={true}
+                        >
+                            <ViewListIcon className="icon-inline" /> Sources{' '}
+                            <span className="badge badge-secondary">{thread.targets.totalCount}</span>
+                        </NavLink>
+                    </li>
+                </ul>
             </li>
             <li className="nav-item">
                 <NavLink
@@ -60,6 +74,22 @@ export const ThreadAreaSidebar: React.FunctionComponent<Props> = ({
                     <SourcePullIcon className="icon-inline" /> Changes{' '}
                     {threadSettings.createPullRequests && <span className="badge badge-secondary">50%</span>}
                 </NavLink>
+                {threadSettings.createPullRequests ? (
+                    <div className="d-flex align-items-center position-relative mb-3 border rounded">
+                        <Link to={`${thread.url}/activity`} className="stretched-link" />
+                        <ThreadStatusItemsProgressBar
+                            className="flex-1 rounded"
+                            height="1.25rem"
+                            label="50% complete"
+                        />
+                    </div>
+                ) : (
+                    <div className="alert alert-info position-relative">
+                        <Link to={`${thread.url}/activity`} className="stretched-link font-weight-bold text-body">
+                            10 pull requests pending
+                        </Link>
+                    </div>
+                )}
             </li>
             <li className="nav-item">
                 <NavLink

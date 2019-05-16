@@ -25,6 +25,7 @@ interface Props extends ExtensionsControllerProps {
     location: H.Location
     forceURL?: boolean
     className?: string
+    commentClassName?: string
 }
 
 interface State {
@@ -129,6 +130,7 @@ export class DiscussionsThread extends React.PureComponent<Props, State> {
                                 onClearReports={this.onCommentClearReports}
                                 onDelete={this.onCommentDelete}
                                 extensionsController={this.props.extensionsController}
+                                className={this.props.commentClassName}
                             />
                         ))}
                         <DiscussionsInput

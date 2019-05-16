@@ -1,4 +1,9 @@
 .thread-area-sidebar {
+    &__subnav {
+        margin-left: $spacer * 0.5;
+        font-size: $font-size-sm;
+    }
+
     &__nav-link {
         color: var(--body-color) !important;
         box-shadow: none !important; // remove Bootstrap focus ring
