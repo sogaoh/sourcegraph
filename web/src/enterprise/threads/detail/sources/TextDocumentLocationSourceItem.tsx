@@ -2,12 +2,13 @@ import classNames from 'classnames'
 import formatDistance from 'date-fns/formatDistance'
 import H from 'history'
 import { upperFirst } from 'lodash'
-import AlertDecagramIcon from 'mdi-react/AlertDecagramIcon'
+import AlertCircleOutlineIcon from 'mdi-react/AlertCircleOutlineIcon'
 import CancelIcon from 'mdi-react/CancelIcon'
 import CloseCircleIcon from 'mdi-react/CloseCircleIcon'
 import MessageOutlineIcon from 'mdi-react/MessageOutlineIcon'
 import React from 'react'
 import { CodeExcerpt } from '../../../../../../shared/src/components/CodeExcerpt'
+import { LinkOrSpan } from '../../../../../../shared/src/components/LinkOrSpan'
 import { displayRepoName } from '../../../../../../shared/src/components/RepoFileLink'
 import { ExtensionsControllerProps } from '../../../../../../shared/src/extensions/controller'
 import * as GQL from '../../../../../../shared/src/graphql/schema'
@@ -30,7 +31,7 @@ interface Props extends ExtensionsControllerProps {
 }
 
 const STATUS_ICONS: Record<ThreadSourceItem['status'], React.ComponentType<{ className?: string }>> = {
-    open: AlertDecagramIcon,
+    open: AlertCircleOutlineIcon,
     closed: CloseCircleIcon,
     ignored: CancelIcon,
 }
@@ -57,22 +58,17 @@ export const TextDocumentLocationSourceItem: React.FunctionComponent<Props> = ({
                     data-tooltip={upperFirst(status)}
                 />
                 <div className="flex-1">
-                    <h3 className="d-flex align-items-center mb-0">
-                        <a
-                            href="TODO!(sqs)"
-                            target="_blank"
-                            // tslint:disable-next-line:jsx-ban-props
-                            style={{ color: 'var(--body-color)' }}
-                        >
+                    <h3 className="d-flex align-items-center mb-0 h6">
+                        <LinkOrSpan to={item.url} className="text-body">
                             {item.path ? (
                                 <>
                                     <span className="font-weight-normal">{displayRepoName(item.repository.name)}</span>{' '}
-                                    &mdash; <code>{item.path}</code>
+                                    › {item.path}
                                 </>
                             ) : (
                                 displayRepoName(item.repository.name)
                             )}
-                        </a>
+                        </LinkOrSpan>
                     </h3>
                     <small className="text-muted">
                         Changed {formatDistance(Date.parse(item.updatedAt), Date.now())} ago by{' '}

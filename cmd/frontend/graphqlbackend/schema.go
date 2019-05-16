@@ -2553,6 +2553,9 @@ type DiscussionThreadTargetRepo {
     # failed) null is returned and it should be assumed the selection does not
     # exist in this revision.
     relativeSelection(rev: String!): DiscussionSelectionRange
+
+    # The URL to this target, or null if there is no URL.
+    url: String
 }
 
 # The target of a discussion thread. Today, the only possible target is a

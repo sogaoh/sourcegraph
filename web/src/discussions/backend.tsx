@@ -55,8 +55,10 @@ const discussionThreadFieldsFragment = gql`
                         lines
                         linesAfter
                     }
+                    url
                 }
             }
+            totalCount
         }
         settings
         status

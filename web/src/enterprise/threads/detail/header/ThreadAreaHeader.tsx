@@ -32,7 +32,7 @@ export const ThreadAreaHeader: React.FunctionComponent<Props> = ({
                 {...props}
                 thread={thread}
                 onThreadUpdate={onThreadUpdate}
-                className="thread-area-header__thread-title mt-4"
+                className="thread-area-header__thread-title mt-4 pt-2"
             />
             <div className="area-header__nav mt-4">
                 <div className="area-header__nav-links">

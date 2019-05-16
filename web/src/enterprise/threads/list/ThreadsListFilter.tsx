@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap'
 import { Form } from '../../../components/Form'
 
@@ -18,6 +18,7 @@ interface Props {
 // tslint:disable: jsx-no-lambda
 export const ThreadsListFilter: React.FunctionComponent<Props> = ({ value, onChange, className }) => {
     const [uncommittedValue, setUncommittedValue] = useState(value)
+    useEffect(() => setUncommittedValue(value), [value])
     const [isOpen, setIsOpen] = useState(false)
 
     return (

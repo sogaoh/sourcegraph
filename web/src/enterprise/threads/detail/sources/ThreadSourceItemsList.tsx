@@ -115,6 +115,7 @@ const DATA: ThreadSourceItem[] = [
     },
 ]
 
+// TODO!(sqs): use relative path/rev for DiscussionThreadTargetRepo
 const querySourceItems = (threadID: GQL.ID): Promise<GQL.IDiscussionThreadTargetConnection> =>
     queryGraphQL(
         gql`
@@ -145,6 +146,7 @@ const querySourceItems = (threadID: GQL.ID): Promise<GQL.IDiscussionThreadTarget
                                         lines
                                         linesAfter
                                     }
+                                    url
                                 }
                             }
                             totalCount

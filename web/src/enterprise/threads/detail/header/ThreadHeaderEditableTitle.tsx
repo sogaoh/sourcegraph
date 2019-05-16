@@ -4,9 +4,11 @@ import { ExtensionsControllerProps } from '../../../../../../shared/src/extensio
 import * as GQL from '../../../../../../shared/src/graphql/schema'
 import { Form } from '../../../../components/Form'
 import { updateThread } from '../../../../discussions/backend'
+import { DiscussionThreadWithStatus } from '../../components/threadStatus/threadStatus'
+import { ThreadStatusBadge } from '../../components/threadStatus/ThreadStatusBadge'
 
 interface Props {
-    thread: Pick<GQL.IDiscussionThread, 'id' | 'title'>
+    thread: Pick<GQL.IDiscussionThread, 'id' | 'idWithoutKind' | 'title'> & DiscussionThreadWithStatus
     onThreadUpdate: (thread: GQL.IDiscussionThread) => void
     className?: string
     extensionsController: {
@@ -69,7 +71,12 @@ export const ThreadHeaderEditableTitle: React.FunctionComponent<Props> = ({
 
     return state === 'viewing' ? (
         <div className={`d-flex align-items-start justify-content-between flex-wrap ${className}`}>
-            <h1 className="font-weight-normal mb-0">{thread.title}</h1>
+            <div className="d-flex align-items-center">
+                <ThreadStatusBadge thread={thread} className="mr-2 mt-1" />
+                <h1 className="font-weight-normal mb-0">
+                    {thread.title} <span className="text-muted font-weight-normal">#{thread.idWithoutKind}</span>
+                </h1>
+            </div>
             <button type="button" className="btn btn-secondary btn-sm mt-2" onClick={onEditClick}>
                 Edit
             </button>

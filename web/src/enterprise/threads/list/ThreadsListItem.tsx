@@ -1,9 +1,9 @@
 import H from 'history'
-import CheckboxMultipleBlankOutlineIcon from 'mdi-react/CheckboxMultipleBlankOutlineIcon'
 import MessageOutlineIcon from 'mdi-react/MessageOutlineIcon'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import * as GQL from '../../../../../shared/src/graphql/schema'
+import { ThreadStatusIcon } from '../components/threadStatus/ThreadStatusIcon'
 
 interface Props {
     thread: GQL.IDiscussionThread
@@ -23,10 +23,7 @@ export const ThreadsListItem: React.FunctionComponent<Props> = ({ thread, locati
             >
                 <input className="form-check-input position-static" type="checkbox" aria-label="Select item" />
             </div>
-            <CheckboxMultipleBlankOutlineIcon
-                className={`icon-inline small mr-2 mt-1 ${threadIconColorClass(thread)}`}
-                data-tooltip={threadIconTooltip(thread)}
-            />
+            <ThreadStatusIcon thread={thread} className={`small mr-2 mt-1`} />
             <div className="flex-1">
                 <h3 className="d-flex align-items-center mb-0">
                     {/* tslint:disable-next-line:jsx-ban-props */}
@@ -60,14 +57,6 @@ export const ThreadsListItem: React.FunctionComponent<Props> = ({ thread, locati
         </div>
     </li>
 )
-
-function threadIconColorClass({ archivedAt }: Pick<GQL.IDiscussionThread, 'archivedAt'>): string {
-    return archivedAt ? 'text-muted' : 'text-danger'
-}
-
-function threadIconTooltip({ archivedAt }: Pick<GQL.IDiscussionThread, 'archivedAt'>): string {
-    return archivedAt ? 'Archived thread (no action needed)' : 'Open thread (needs attention)'
-}
 
 function badgeColorClass(label: string): string {
     if (label === 'security' || label.endsWith('sec')) {
