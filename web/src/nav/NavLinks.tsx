@@ -1,4 +1,5 @@
 import * as H from 'history'
+import TimelineTextIcon from 'mdi-react/TimelineTextIcon'
 import * as React from 'react'
 import { Subscription } from 'rxjs'
 import { ContributableMenu } from '../../../shared/src/api/protocol'
@@ -11,29 +12,12 @@ import { PlatformContextProps } from '../../../shared/src/platform/context'
 import { SettingsCascadeProps } from '../../../shared/src/settings/settings'
 import { WebActionsNavItems, WebCommandListPopoverButton } from '../components/shared'
 import { isDiscussionsEnabled } from '../discussions'
+import { ThreadsNavItem } from '../enterprise/threads/global/nav/ThreadsNavItem'
 import { ChecksIcon, CodemodIcon, ThreadsIcon } from '../enterprise/threads/icons'
 import { KeybindingsProps } from '../keybindings'
 import { ThemePreferenceProps, ThemeProps } from '../theme'
 import { EventLoggerProps } from '../tracking/eventLogger'
 import { UserNavItem } from './UserNavItem'
-
-/**
- * A nav link that shows a tooltipped icon on narrow screens and a non-tooltipped icon label on
- * wider screens.
- *
- * The tooltip is hidden on wider screens because it is redundant with the label text.
- */
-const NavLinkWithIconOnlyTooltip: React.FunctionComponent<{
-    to: string
-    text: string
-    icon: React.ComponentType<{ className?: string }>
-}> = ({ to, text, icon: Icon }) => (
-    <Link to={to} className="nav-link d-flex align-items-center">
-        <Icon className="icon-inline d-lg-none" data-tooltip={text} />
-        <Icon className="icon-inline d-none d-lg-inline-block" />
-        <span className="d-none d-lg-inline-block ml-1">{text}</span>
-    </Link>
-)
 
 interface Props
     extends SettingsCascadeProps,
@@ -91,18 +75,10 @@ export class NavLinks extends React.PureComponent<Props> {
                 {(!this.props.showDotComMarketing ||
                     !!this.props.authenticatedUser ||
                     this.props.location.pathname !== '/welcome') && (
-                    <>
-                        {/* TODO!(sqs): only show these on enterprise */}
-                        <li className="nav-item">
-                            <NavLinkWithIconOnlyTooltip to="/threads" text="Threads" icon={ThreadsIcon} />
-                        </li>
-                        <li className="nav-item">
-                            <NavLinkWithIconOnlyTooltip to="/checks" text="Checks" icon={ChecksIcon} />
-                        </li>
-                        <li className="nav-item">
-                            <NavLinkWithIconOnlyTooltip to="/codemods" text="Codemods" icon={CodemodIcon} />
-                        </li>
-                    </>
+                    // TODO!(sqs): only show these on enterprise
+                    <li className="nav-item">
+                        <ThreadsNavItem />
+                    </li>
                 )}
                 {!this.props.authenticatedUser && (
                     <>
@@ -139,6 +115,7 @@ export class NavLinks extends React.PureComponent<Props> {
                 {this.props.location.pathname !== '/welcome' && (
                     <WebCommandListPopoverButton
                         {...this.props}
+                        className="nav-item"
                         menu={ContributableMenu.CommandPalette}
                         toggleVisibilityKeybinding={this.props.keybindings.commandPalette}
                     />

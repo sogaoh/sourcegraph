@@ -1,7 +1,7 @@
 import H from 'history'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ButtonDropdown, DropdownItem, DropdownMenu, DropdownMenuProps, DropdownToggle } from 'reactstrap'
+import { DropdownItem, DropdownMenu, DropdownMenuProps } from 'reactstrap'
 import * as GQL from '../../../../../../shared/src/graphql/schema'
 import { asError, ErrorLike, isErrorLike } from '../../../../../../shared/src/util/errors'
 import { fetchDiscussionThreads } from '../../../../discussions/backend'
@@ -19,7 +19,11 @@ const LOADING: 'loading' = 'loading'
 /**
  * A dropdown menu with a list of threads and an option to create a new thread.
  */
-export const ThreadDropdownMenu: React.FunctionComponent<Props> = ({ onAddToExistingThreadClick, location }) => {
+export const ThreadDropdownMenu: React.FunctionComponent<Props> = ({
+    onAddToExistingThreadClick,
+    location,
+    ...props
+}) => {
     const [threadsOrError, setThreadsOrError] = useState<typeof LOADING | GQL.IDiscussionThreadConnection | ErrorLike>(
         LOADING
     )
@@ -33,10 +37,10 @@ export const ThreadDropdownMenu: React.FunctionComponent<Props> = ({ onAddToExis
         }
     }, [])
 
-    const MAX_THREADS = 9 // TODO!(sqs): hacl
+    const MAX_THREADS = 9 // TODO!(sqs): hack
 
     return (
-        <DropdownMenu right={true}>
+        <DropdownMenu {...props}>
             <Link to={urlForNewThreadAtSelection(location)} className="dropdown-item">
                 Start new thread
             </Link>
