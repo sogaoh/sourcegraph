@@ -34,7 +34,7 @@ add('interactive', () => {
     const CompletionWidgetInteractive: React.FunctionComponent = () => {
         const [element, setElement] = useState<HTMLTextAreaElement | null>(null)
         return (
-            <div className="position-relative p-5">
+            <aside className="position-relative p-5">
                 {element && (
                     <StyledCompletionWidget
                         completionListOrError={
@@ -51,7 +51,7 @@ add('interactive', () => {
                     className="w-100"
                     defaultValue={text('Initial value', 'hello, world!')}
                 />
-            </div>
+            </aside>
         )
     }
     return <CompletionWidgetInteractive />

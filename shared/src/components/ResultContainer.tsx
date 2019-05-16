@@ -93,8 +93,8 @@ export class ResultContainer extends React.PureComponent<Props, State> {
         const Icon = this.props.icon
         const stringIcon = this.props.stringIcon ? this.props.stringIcon : undefined
         return (
-            <div className="result-container" data-testid="result-container">
-                <div
+            <aside className="result-container" data-testid="result-container">
+                <aside
                     className={
                         'result-container__header' +
                         (this.props.collapsible ? ' result-container__header--collapsible' : '')
@@ -106,7 +106,7 @@ export class ResultContainer extends React.PureComponent<Props, State> {
                     ) : (
                         <Icon className="icon-inline" />
                     )}
-                    <div
+                    <aside
                         className={`result-container__header-title ${this.props.titleClassName || ''}`}
                         data-testid="result-container-header"
                     >
@@ -115,7 +115,7 @@ export class ResultContainer extends React.PureComponent<Props, State> {
                         ) : (
                             this.props.title
                         )}
-                    </div>
+                    </aside>
                     {this.props.collapsible &&
                         (this.state.expanded ? (
                             <small className="result-container__toggle-matches-container">
@@ -130,10 +130,10 @@ export class ResultContainer extends React.PureComponent<Props, State> {
                                 {!this.props.expandLabel && <ChevronRightIcon className="icon-inline" />}
                             </small>
                         ))}
-                </div>
+                </aside>
                 {!this.state.expanded && this.props.collapsedChildren}
                 {this.state.expanded && this.props.expandedChildren}
-            </div>
+            </aside>
         )
     }
 

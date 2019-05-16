@@ -42,7 +42,7 @@ export class VirtualList extends React.PureComponent<Props, State> {
 
     public render(): JSX.Element | null {
         return (
-            <div className={this.props.className} ref={this.props.onRef}>
+            <aside className={this.props.className} ref={this.props.onRef}>
                 {this.props.items.slice(0, this.props.itemsToShow).map((item, i) => (
                     <VisibilitySensor
                         key={item.key || '0'}
@@ -54,7 +54,7 @@ export class VirtualList extends React.PureComponent<Props, State> {
                         {item}
                     </VisibilitySensor>
                 ))}
-            </div>
+            </aside>
         )
     }
 }

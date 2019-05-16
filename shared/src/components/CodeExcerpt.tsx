@@ -147,16 +147,16 @@ export class CodeExcerpt extends React.PureComponent<Props, State> {
                     }`}
                 >
                     {this.state.blobLinesOrError && !isErrorLike(this.state.blobLinesOrError) && (
-                        <div
+                        <aside
                             ref={this.setTableContainerElement}
                             dangerouslySetInnerHTML={{ __html: this.makeTableHTML(this.state.blobLinesOrError) }}
                         />
                     )}
                     {this.state.blobLinesOrError && isErrorLike(this.state.blobLinesOrError) && (
-                        <div className="code-excerpt-alert">
+                        <aside className="code-excerpt-alert">
                             <ErrorIcon className="icon-inline mr-2" />
                             {this.state.blobLinesOrError.message}
-                        </div>
+                        </aside>
                     )}
                     {!this.state.blobLinesOrError && (
                         <table>

@@ -196,7 +196,7 @@ export class HierarchicalLocationsView extends React.PureComponent<HierarchicalL
         })
 
         return (
-            <div className={`hierarchical-locations-view ${this.props.className || ''}`}>
+            <aside className={`hierarchical-locations-view ${this.props.className || ''}`}>
                 {selectedGroups &&
                     groupsToDisplay.map(
                         (g, i) =>
@@ -208,7 +208,7 @@ export class HierarchicalLocationsView extends React.PureComponent<HierarchicalL
                                     storageKey={`hierarchical-locations-view-resizable:${g.name}`}
                                     defaultSize={g.defaultSize}
                                     element={
-                                        <div className="list-group list-group-flush hierarchical-locations-view__list">
+                                        <aside className="list-group list-group-flush hierarchical-locations-view__list">
                                             {groups[i].map((group, j) => (
                                                 <span
                                                     key={j}
@@ -235,7 +235,7 @@ export class HierarchicalLocationsView extends React.PureComponent<HierarchicalL
                                                 this.state.locationsOrError.loading && (
                                                     <LoadingSpinner className="icon-inline m-2 flex-shrink-0" />
                                                 )}
-                                        </div>
+                                        </aside>
                                     }
                                 />
                             )
@@ -250,7 +250,7 @@ export class HierarchicalLocationsView extends React.PureComponent<HierarchicalL
                     fetchHighlightedFileLines={this.props.fetchHighlightedFileLines}
                     settingsCascade={this.props.settingsCascade}
                 />
-            </div>
+            </aside>
         )
     }
 

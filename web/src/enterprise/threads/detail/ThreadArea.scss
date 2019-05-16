@@ -1,2 +1,24 @@
 @import './header/ThreadAreaHeader';
+@import './sidebar/ThreadAreaSidebar';
 @import './sources/ThreadSourceItemsList';
+
+.thread-area {
+    &__sidebar {
+        &-resizable {
+            min-width: 10rem;
+            max-width: 80%;
+        }
+    }
+
+    &__sidebar,
+    &__header {
+        background-color: $color-bg-2;
+    }
+}
+
+.theme-light .thread-area {
+    &__sidebar,
+    &__header {
+        background-color: $color-light-bg-2;
+    }
+}

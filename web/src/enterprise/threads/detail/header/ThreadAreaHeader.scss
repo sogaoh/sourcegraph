@@ -1,7 +1,9 @@
 .thread-area-header {
     &__thread-title {
+        max-width: 40rem;
+
         // Ensure the text header is at least as tall as the input, so that clicking "Edit" doesn't
         // cause jitter due to a height change.
-        min-height: 3.25rem;
+        min-height: 2.25rem;
     }
 }

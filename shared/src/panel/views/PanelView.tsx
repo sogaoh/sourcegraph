@@ -28,14 +28,14 @@ interface State {}
 export class PanelView extends React.PureComponent<Props, State> {
     public render(): JSX.Element | null {
         return (
-            <div
+            <aside
                 onClick={createLinkClickHandler(this.props.history)}
                 className="panel__tabs-content panel__tabs-content--scroll"
             >
                 {this.props.panelView.content && (
-                    <div className="px-2 pt-2">
+                    <aside className="px-2 pt-2">
                         <Markdown dangerousInnerHTML={renderMarkdown(this.props.panelView.content)} />
-                    </div>
+                    </aside>
                 )}
                 {this.props.panelView.reactElement}
                 {this.props.panelView.locationProvider && this.props.repoName && (
@@ -52,7 +52,7 @@ export class PanelView extends React.PureComponent<Props, State> {
                 {!this.props.panelView.content &&
                     !this.props.panelView.reactElement &&
                     !this.props.panelView.locationProvider && <EmptyPanelView className="mt-3" />}
-            </div>
+            </aside>
         )
     }
 }

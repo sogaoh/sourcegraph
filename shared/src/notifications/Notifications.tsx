@@ -78,7 +78,7 @@ export class Notifications extends React.PureComponent<Props, State> {
 
     public render(): JSX.Element | null {
         return (
-            <div className="sourcegraph-notifications">
+            <aside className="sourcegraph-notifications">
                 {this.state.notifications.slice(0, Notifications.MAX_RETAIN).map(notification => (
                     <NotificationItem
                         key={notification.id}
@@ -87,7 +87,7 @@ export class Notifications extends React.PureComponent<Props, State> {
                         className="sourcegraph-notifications__notification m-2"
                     />
                 ))}
-            </div>
+            </aside>
         )
     }
 

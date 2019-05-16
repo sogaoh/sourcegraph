@@ -4,11 +4,9 @@ import { ExtensionsControllerProps } from '../../../../../../shared/src/extensio
 import * as GQL from '../../../../../../shared/src/graphql/schema'
 import { Form } from '../../../../components/Form'
 import { updateThread } from '../../../../discussions/backend'
-import { DiscussionThreadWithStatus } from '../../components/threadStatus/threadStatus'
-import { ThreadStatusBadge } from '../../components/threadStatus/ThreadStatusBadge'
 
 interface Props {
-    thread: Pick<GQL.IDiscussionThread, 'id' | 'idWithoutKind' | 'title'> & DiscussionThreadWithStatus
+    thread: Pick<GQL.IDiscussionThread, 'id' | 'idWithoutKind' | 'title'>
     onThreadUpdate: (thread: GQL.IDiscussionThread) => void
     className?: string
     extensionsController: {
@@ -70,14 +68,13 @@ export const ThreadHeaderEditableTitle: React.FunctionComponent<Props> = ({
     )
 
     return state === 'viewing' ? (
-        <div className={`d-flex align-items-start justify-content-between flex-wrap ${className}`}>
-            <div className="d-flex align-items-center">
-                <ThreadStatusBadge thread={thread} className="mr-2 mt-1" />
-                <h1 className="font-weight-normal mb-0">
+        <div className={`d-flex align-items-center ${className}`}>
+            <div className="d-flex align-items-center mr-2">
+                <h1 className="font-weight-normal mb-0 h4">
                     {thread.title} <span className="text-muted font-weight-normal">#{thread.idWithoutKind}</span>
                 </h1>
             </div>
-            <button type="button" className="btn btn-secondary btn-sm mt-2" onClick={onEditClick}>
+            <button type="button" className="btn btn-secondary btn-sm" onClick={onEditClick}>
                 Edit
             </button>
         </div>
@@ -85,7 +82,7 @@ export const ThreadHeaderEditableTitle: React.FunctionComponent<Props> = ({
         <Form className={`form d-flex ${className}`} onSubmit={onSubmit}>
             <input
                 type="text"
-                className="form-control form-control-lg flex-1 mr-2"
+                className="form-control flex-1 mr-2"
                 value={uncommittedTitle}
                 onChange={e => setUncommittedTitle(e.currentTarget.value)}
                 placeholder="Title"
@@ -94,7 +91,7 @@ export const ThreadHeaderEditableTitle: React.FunctionComponent<Props> = ({
                 disabled={state === 'loading'}
             />
             <div className="text-nowrap flex-0 d-flex align-items-center">
-                <button type="submit" className="btn btn-success btn-lg" disabled={state === 'loading'}>
+                <button type="submit" className="btn btn-success" disabled={state === 'loading'}>
                     Save
                 </button>
                 <button type="reset" className="btn btn-link" onClick={onCancelClick} disabled={state === 'loading'}>

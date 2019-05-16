@@ -16,10 +16,10 @@ add('interactive', () => {
         public state: State = {}
         public render(): JSX.Element | null {
             return (
-                <div className="d-flex align-items-center">
+                <aside className="d-flex align-items-center">
                     <Toggle value={this.state.value} onToggle={this.onToggle} title="Hello" className="mr-2" /> Value is{' '}
                     {String(this.state.value)}
-                </div>
+                </aside>
             )
         }
         private onToggle = (value: boolean) => this.setState({ value }, () => onToggle(value))

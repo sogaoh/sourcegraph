@@ -1,11 +1,9 @@
-import SettingsIcon from 'mdi-react/SettingsIcon'
-import SourcePullIcon from 'mdi-react/SourcePullIcon'
-import ViewListIcon from 'mdi-react/ViewListIcon'
+import ChevronLeftIcon from 'mdi-react/ChevronLeftIcon'
 import React from 'react'
-import { NavLink } from 'react-router-dom'
-import { ChatIcon } from '../../../../../../shared/src/components/icons'
+import { Link } from 'react-router-dom'
 import { ExtensionsControllerProps } from '../../../../../../shared/src/extensions/controller'
 import * as GQL from '../../../../../../shared/src/graphql/schema'
+import { ThreadStatusBadge } from '../../components/threadStatus/ThreadStatusBadge'
 import { ThreadSettings } from '../../settings'
 import { ThreadHeaderEditableTitle } from './ThreadHeaderEditableTitle'
 
@@ -14,6 +12,7 @@ interface Props extends ExtensionsControllerProps {
     onThreadUpdate: (thread: GQL.IDiscussionThread) => void
     threadSettings: ThreadSettings
     areaURL: string
+    className?: string
 }
 
 /**
@@ -24,54 +23,19 @@ export const ThreadAreaHeader: React.FunctionComponent<Props> = ({
     onThreadUpdate,
     threadSettings,
     areaURL,
+    className = '',
     ...props
 }) => (
-    <div className="thread-area-header border-top-0 border-bottom simple-area-header">
-        <div className="container">
-            <ThreadHeaderEditableTitle
-                {...props}
-                thread={thread}
-                onThreadUpdate={onThreadUpdate}
-                className="thread-area-header__thread-title mt-4 pt-2"
-            />
-            <div className="area-header__nav mt-4">
-                <div className="area-header__nav-links">
-                    <NavLink
-                        to={areaURL}
-                        className="btn area-header__nav-link"
-                        activeClassName="area-header__nav-link--active"
-                        exact={true}
-                    >
-                        <ChatIcon className="icon-inline" /> Conversation
-                    </NavLink>
-                    <NavLink
-                        to={`${areaURL}/sources`}
-                        className="btn area-header__nav-link"
-                        activeClassName="area-header__nav-link--active"
-                        exact={true}
-                    >
-                        <ViewListIcon className="icon-inline" /> Sources{' '}
-                        <span className="badge badge-secondary">19</span>
-                    </NavLink>
-                    <NavLink
-                        to={`${areaURL}/activity`}
-                        className="btn area-header__nav-link"
-                        activeClassName="area-header__nav-link--active"
-                        exact={true}
-                    >
-                        <SourcePullIcon className="icon-inline" /> Changes{' '}
-                        {threadSettings.createPullRequests && <span className="badge badge-secondary">50%</span>}
-                    </NavLink>
-                    <NavLink
-                        to={`${areaURL}/manage`}
-                        className="btn area-header__nav-link"
-                        activeClassName="area-header__nav-link--active"
-                        exact={true}
-                    >
-                        <SettingsIcon className="icon-inline" /> Manage
-                    </NavLink>
-                </div>
-            </div>
-        </div>
-    </div>
+    <header className={`thread-area-header p-2 d-flex align-items-center ${className}`}>
+        <Link className="text-muted p-1 mr-2" to="/threads" data-tooltip="Back to thread list">
+            <ChevronLeftIcon className="icon-inline" />
+        </Link>
+        <ThreadStatusBadge thread={thread} className="mr-2" />
+        <ThreadHeaderEditableTitle
+            {...props}
+            thread={thread}
+            onThreadUpdate={onThreadUpdate}
+            className="thread-area-header__thread-title flex-1"
+        />
+    </header>
 )

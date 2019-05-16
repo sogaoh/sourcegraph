@@ -22,7 +22,7 @@ export class ActivationChecklistItem extends React.PureComponent<ActivationCheck
     }
     public render(): JSX.Element {
         const checkboxElem = (
-            <div className={'activation-item'}>
+            <aside className={'activation-item'}>
                 {this.props.title}
                 &nbsp;
                 {this.props.done ? (
@@ -30,11 +30,11 @@ export class ActivationChecklistItem extends React.PureComponent<ActivationCheck
                 ) : (
                     <CheckboxBlankCircleIcon className="icon-inline activation-item__checkbox--todo" />
                 )}
-            </div>
+            </aside>
         )
 
         return (
-            <div onClick={this.onClick} data-tooltip={this.props.detail}>
+            <aside onClick={this.onClick} data-tooltip={this.props.detail}>
                 {this.props.link ? (
                     <Link className={'activation-item__link'} {...this.props.link}>
                         {checkboxElem}
@@ -42,7 +42,7 @@ export class ActivationChecklistItem extends React.PureComponent<ActivationCheck
                 ) : (
                     <span className="activation-item__link">{checkboxElem}</span>
                 )}
-            </div>
+            </aside>
         )
     }
 }
@@ -59,23 +59,23 @@ export interface ActivationChecklistProps {
 export class ActivationChecklist extends React.PureComponent<ActivationChecklistProps, {}> {
     public render(): JSX.Element {
         return (
-            <div className="activation-checklist">
+            <aside className="activation-checklist">
                 {this.props.completed ? (
                     this.props.steps.map(step => (
-                        <div key={step.id} className="activation-checklist__item">
+                        <aside key={step.id} className="activation-checklist__item">
                             <ActivationChecklistItem
                                 {...step}
                                 history={this.props.history}
                                 done={(this.props.completed && this.props.completed[step.id]) || false}
                             />
-                        </div>
+                        </aside>
                     ))
                 ) : (
-                    <div>
+                    <aside>
                         <LoadingSpinner className="icon-inline" />
-                    </div>
+                    </aside>
                 )}
-            </div>
+            </aside>
         )
     }
 }

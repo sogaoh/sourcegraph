@@ -13,7 +13,7 @@ export const ThreadStatusBadge: React.FunctionComponent<Props> = ({ thread, clas
     const { color, icon: Icon, text } = threadStatusInfo(thread)
     return (
         <span
-            className={`badge badge-${color} ${className} d-flex align-items-center py-1 px-2 h6 mb-0 font-weight-bold`}
+            className={`badge badge-${color} ${className} d-inline-flex align-items-center py-1 px-2 h6 mb-0 font-weight-bold`}
         >
             <Icon className="icon-inline mr-1" /> {text}
         </span>

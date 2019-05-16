@@ -49,7 +49,7 @@ interface TabBarProps<ID extends string, T extends Tab<ID>> {
 class TabBar<ID extends string, T extends Tab<ID>> extends React.PureComponent<TabBarProps<ID, T>> {
     public render(): JSX.Element | null {
         return (
-            <div className={`tab-bar ${this.props.tabs.length === 0 ? 'tab-bar--empty' : ''}`}>
+            <aside className={`tab-bar ${this.props.tabs.length === 0 ? 'tab-bar--empty' : ''}`}>
                 {this.props.tabs
                     .filter(({ hidden }) => !hidden)
                     .map((tab, i) => (
@@ -65,7 +65,7 @@ class TabBar<ID extends string, T extends Tab<ID>> extends React.PureComponent<T
                         />
                     ))}
                 {this.props.endFragment}
-            </div>
+            </aside>
         )
     }
 }
@@ -136,7 +136,7 @@ class Tabs<ID extends string, T extends Tab<ID>> extends React.PureComponent<
         }
 
         return (
-            <div id={this.props.id} className={`tabs ${this.props.className || ''}`}>
+            <aside id={this.props.id} className={`tabs ${this.props.className || ''}`}>
                 <TabBar
                     tabs={this.props.tabs}
                     activeTab={this.props.activeTab}
@@ -144,9 +144,11 @@ class Tabs<ID extends string, T extends Tab<ID>> extends React.PureComponent<
                     tabClassName={this.props.tabClassName}
                     tabComponent={this.props.tabComponent}
                 />
-                {this.props.toolbarFragment && <div className="tabs__toolbar small">{this.props.toolbarFragment}</div>}
+                {this.props.toolbarFragment && (
+                    <aside className="tabs__toolbar small">{this.props.toolbarFragment}</aside>
+                )}
                 {children && children.find(c => c && c.key === this.props.activeTab)}
-            </div>
+            </aside>
         )
     }
 }

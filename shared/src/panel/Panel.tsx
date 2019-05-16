@@ -101,7 +101,7 @@ export class Panel extends React.PureComponent<Props, State> {
         const activePanelView = items.find(item => item.id === activePanelViewID)
 
         return (
-            <div className="panel">
+            <aside className="panel">
                 {hasTabs ? (
                     <TabsWithURLViewStatePersistence
                         tabs={items}
@@ -147,7 +147,7 @@ export class Panel extends React.PureComponent<Props, State> {
                 ) : (
                     <EmptyPanelView />
                 )}
-            </div>
+            </aside>
         )
     }
 

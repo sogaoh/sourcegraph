@@ -79,7 +79,7 @@ export const FileMatchChildren: React.FunctionComponent<FileMatchProps> = props 
     )
 
     return (
-        <div className="file-match-children">
+        <aside className="file-match-children">
             {/* Symbols */}
             {(props.result.symbols || []).map(symbol => (
                 <Link
@@ -117,6 +117,6 @@ export const FileMatchChildren: React.FunctionComponent<FileMatchProps> = props 
                     </Link>
                 )
             })}
-        </div>
+        </aside>
     )
 }

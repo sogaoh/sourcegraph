@@ -139,7 +139,7 @@ export class CommandList extends React.PureComponent<CommandListProps, State> {
         const selectedIndex = ((this.state.selectedIndex % items.length) + items.length) % items.length
 
         return (
-            <div className="command-list">
+            <aside className="command-list">
                 <header>
                     {/* tslint:disable-next-line:jsx-ban-elements */}
                     <form className={this.props.formClassName} onSubmit={this.onSubmit}>
@@ -161,7 +161,7 @@ export class CommandList extends React.PureComponent<CommandListProps, State> {
                         />
                     </form>
                 </header>
-                <div className={this.props.resultsContainerClassName}>
+                <aside className={this.props.resultsContainerClassName}>
                     <ul className={this.props.listClassName}>
                         {items.length > 0 ? (
                             items.map((item, i) => (
@@ -195,8 +195,8 @@ export class CommandList extends React.PureComponent<CommandListProps, State> {
                             <li className={this.props.noResultsClassName}>No matching commands</li>
                         )}
                     </ul>
-                </div>
-            </div>
+                </aside>
+            </aside>
         )
     }
 

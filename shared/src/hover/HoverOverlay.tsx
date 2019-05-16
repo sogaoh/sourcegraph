@@ -87,7 +87,7 @@ export class HoverOverlay extends React.PureComponent<HoverOverlayProps> {
             return null
         }
         return (
-            <div
+            <aside
                 className={`hover-overlay card ${className}`}
                 ref={hoverRef}
                 // tslint:disable-next-line:jsx-ban-props needed for dynamic styling
@@ -113,18 +113,18 @@ export class HoverOverlay extends React.PureComponent<HoverOverlayProps> {
                         <CloseIcon className="icon-inline" />
                     </button>
                 )}
-                <div className="hover-overlay__contents">
+                <aside className="hover-overlay__contents">
                     {hoverOrError === LOADING ? (
-                        <div className="hover-overlay__row hover-overlay__loader-row">
+                        <aside className="hover-overlay__row hover-overlay__loader-row">
                             <LoadingSpinner className="icon-inline" />
-                        </div>
+                        </aside>
                     ) : isErrorLike(hoverOrError) ? (
-                        <div className="hover-overlay__row hover-overlay__hover-error alert alert-danger">
+                        <aside className="hover-overlay__row hover-overlay__hover-error alert alert-danger">
                             <h4>
                                 <AlertCircleOutlineIcon className="icon-inline" /> Error:
                             </h4>{' '}
                             {hoverOrError.message}
-                        </div>
+                        </aside>
                     ) : (
                         // tslint:disable-next-line deprecation We want to handle the deprecated MarkedString
                         hoverOrError &&
@@ -135,7 +135,7 @@ export class HoverOverlay extends React.PureComponent<HoverOverlayProps> {
                                     if (content.kind === 'markdown') {
                                         try {
                                             return (
-                                                <div
+                                                <aside
                                                     className="hover-overlay__content hover-overlay__row e2e-tooltip-content"
                                                     key={i}
                                                     dangerouslySetInnerHTML={{ __html: renderMarkdown(content.value) }}
@@ -143,19 +143,19 @@ export class HoverOverlay extends React.PureComponent<HoverOverlayProps> {
                                             )
                                         } catch (err) {
                                             return (
-                                                <div className="hover-overlay__row alert alert-danger" key={i}>
+                                                <aside className="hover-overlay__row alert alert-danger" key={i}>
                                                     <strong>
                                                         <AlertCircleOutlineIcon className="icon-inline" /> Error:
                                                     </strong>{' '}
                                                     {err.message}
-                                                </div>
+                                                </aside>
                                             )
                                         }
                                     }
                                     return (
-                                        <div className="hover-overlay__content hover-overlay__row" key={i}>
+                                        <aside className="hover-overlay__content hover-overlay__row" key={i}>
                                             {String(content.value)}
-                                        </div>
+                                        </aside>
                                     )
                                 }
                                 return (
@@ -169,13 +169,13 @@ export class HoverOverlay extends React.PureComponent<HoverOverlayProps> {
                                 )
                             })
                     )}
-                </div>
+                </aside>
                 {actionsOrError !== undefined &&
                     actionsOrError !== null &&
                     actionsOrError !== LOADING &&
                     !isErrorLike(actionsOrError) &&
                     actionsOrError.length > 0 && (
-                        <div className="hover-overlay__actions hover-overlay__row">
+                        <aside className="hover-overlay__actions hover-overlay__row">
                             {actionsOrError.map((action, i) => (
                                 <ActionItem
                                     key={i}
@@ -196,9 +196,9 @@ export class HoverOverlay extends React.PureComponent<HoverOverlayProps> {
                                     location={this.props.location}
                                 />
                             ))}
-                        </div>
+                        </aside>
                     )}
-            </div>
+            </aside>
         )
     }
 

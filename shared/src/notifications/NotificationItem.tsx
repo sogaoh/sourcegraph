@@ -70,24 +70,24 @@ export class NotificationItem extends React.PureComponent<Props, State> {
     public render(): JSX.Element | null {
         const bootstrapClass = getBootstrapClass(this.props.notification.type)
         return (
-            <div
+            <aside
                 className={`sourcegraph-notification-item alert alert-${bootstrapClass} ${this.props.className || ''}`}
             >
-                <div className="sourcegraph-notification-item__body-container">
-                    <div className="sourcegraph-notification-item__body">
-                        <div
+                <aside className="sourcegraph-notification-item__body-container">
+                    <aside className="sourcegraph-notification-item__body">
+                        <aside
                             className="sourcegraph-notification-item__title"
                             dangerouslySetInnerHTML={{ __html: renderMarkdown(this.props.notification.message || '') }}
                         />
                         {this.state.progress && (
-                            <div
+                            <aside
                                 className="sourcegraph-notification-item__content"
                                 dangerouslySetInnerHTML={{
                                     __html: renderMarkdown(this.state.progress.message),
                                 }}
                             />
                         )}
-                    </div>
+                    </aside>
                     {(!this.props.notification.progress || !this.state.progress) && (
                         <button
                             type="button"
@@ -98,17 +98,17 @@ export class NotificationItem extends React.PureComponent<Props, State> {
                             <span aria-hidden="true">&times;</span>
                         </button>
                     )}
-                </div>
+                </aside>
                 {this.props.notification.progress && this.state.progress && (
-                    <div className="progress">
-                        <div
+                    <aside className="progress">
+                        <aside
                             className={`sourcegraph-notification-item__progressbar progress-bar`}
                             // tslint:disable-next-line:jsx-ban-props
                             style={{ width: this.state.progress.percentage + '%' }}
                         />
-                    </div>
+                    </aside>
                 )}
-            </div>
+            </aside>
         )
     }
 

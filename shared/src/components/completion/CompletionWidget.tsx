@@ -228,8 +228,8 @@ export class CompletionWidget extends React.Component<CompletionWidgetProps, Sta
         caretCoordinates.top -= this.props.textArea.scrollTop
 
         return (
-            <div className={`completion-widget ${this.props.widgetClassName || ''}`}>
-                <div
+            <aside className={`completion-widget ${this.props.widgetClassName || ''}`}>
+                <aside
                     className={`completion-widget__container ${this.props.widgetContainerClassName || ''}`}
                     // tslint:disable-next-line: jsx-ban-props
                     style={{ left: caretCoordinates.left, top: caretCoordinates.top }}
@@ -243,8 +243,8 @@ export class CompletionWidget extends React.Component<CompletionWidgetProps, Sta
                         highlightedIndex={highlightedIndex}
                         selectedItem={selectedItem}
                     />
-                </div>
-            </div>
+                </aside>
+            </aside>
         )
     }
 }
