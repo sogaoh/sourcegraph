@@ -114,39 +114,44 @@ export class SiteAdminProductSubscriptionsPage extends React.Component<Props, St
         )
     }
 
-    private queryProductSubscriptions = (orderBy: GQL.SubscriptionOrderBy) =>
-        (args: { first?: number }): Observable<GQL.IProductSubscriptionConnection> =>
-            queryGraphQL(
-                gql`
-                    query ProductSubscriptions($first: Int, $account: ID, $orderBy: SubscriptionOrderBy) {
-                        dotcom {
-                            productSubscriptions(first: $first, account: $account, orderBy: $orderBy) {
-                                nodes {
-                                    ...ProductSubscriptionFields
-                                }
-                                totalCount
-                                pageInfo {
-                                    hasNextPage
-                                }
+    private queryProductSubscriptions = (orderBy: GQL.SubscriptionOrderBy) => (args: {
+        first?: number
+    }): Observable<GQL.IProductSubscriptionConnection> =>
+        queryGraphQL(
+            gql`
+                query ProductSubscriptions($first: Int, $account: ID, $orderBy: SubscriptionOrderBy) {
+                    dotcom {
+                        productSubscriptions(first: $first, account: $account, orderBy: $orderBy) {
+                            nodes {
+                                ...ProductSubscriptionFields
+                            }
+                            totalCount
+                            pageInfo {
+                                hasNextPage
                             }
                         }
                     }
-                    ${siteAdminProductSubscriptionFragment}
-                `,
-                {
-                    first: args.first,
-                    orderBy,
-                } as GQL.IProductSubscriptionsOnDotcomQueryArguments
-            ).pipe(
-                map(({ data, errors }) => {
-                    if (!data || !data.dotcom || !data.dotcom.productSubscriptions || (errors && errors.length > 0)) {
-                        throw createAggregateError(errors)
-                    }
-                    return data.dotcom.productSubscriptions
-                })
-            )
-    private queryProductSubscriptionsByCreatedAt = this.queryProductSubscriptions(GQL.SubscriptionOrderBy.SUBSCRIPTION_CREATED_AT)
-    private queryProductSubscriptionsByExpiresAt = this.queryProductSubscriptions(GQL.SubscriptionOrderBy.SUBSCRIPTION_ACTIVE_LICENSE_EXPIRES_AT)
+                }
+                ${siteAdminProductSubscriptionFragment}
+            `,
+            {
+                first: args.first,
+                orderBy,
+            } as GQL.IProductSubscriptionsOnDotcomQueryArguments
+        ).pipe(
+            map(({ data, errors }) => {
+                if (!data || !data.dotcom || !data.dotcom.productSubscriptions || (errors && errors.length > 0)) {
+                    throw createAggregateError(errors)
+                }
+                return data.dotcom.productSubscriptions
+            })
+        )
+    private queryProductSubscriptionsByCreatedAt = this.queryProductSubscriptions(
+        GQL.SubscriptionOrderBy.SUBSCRIPTION_CREATED_AT
+    )
+    private queryProductSubscriptionsByExpiresAt = this.queryProductSubscriptions(
+        GQL.SubscriptionOrderBy.SUBSCRIPTION_ACTIVE_LICENSE_EXPIRES_AT
+    )
 
     private onDidUpdateProductSubscription = () => this.updates.next()
 }
