@@ -20,6 +20,7 @@ type dbSubscription struct {
 	BillingSubscriptionID *string // this subscription's ID in the billing system
 	CreatedAt             time.Time
 	ArchivedAt            *time.Time
+	ExpiresAt             *time.Time
 }
 
 // errSubscriptionNotFound occurs when a database operation expects a specific Sourcegraph
@@ -56,7 +57,7 @@ func (s dbSubscriptions) GetByID(ctx context.Context, id string) (*dbSubscriptio
 	if mocks.subscriptions.GetByID != nil {
 		return mocks.subscriptions.GetByID(id)
 	}
-	results, err := s.list(ctx, []*sqlf.Query{sqlf.Sprintf("id=%s", id)}, nil)
+	results, err := s.list(ctx, []*sqlf.Query{sqlf.Sprintf("id=%s", id)}, SubscriptionsListOrderBy{}, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -70,8 +71,31 @@ func (s dbSubscriptions) GetByID(ctx context.Context, id string) (*dbSubscriptio
 type dbSubscriptionsListOptions struct {
 	UserID          int32 // only list product subscriptions for this user
 	IncludeArchived bool
+	OrderBy         SubscriptionsListOrderBy
 	*db.LimitOffset
 }
+
+type SubscriptionsListOrderBy []SubscriptionsListOrderByClause
+
+func (r SubscriptionsListOrderBy) SQL() *sqlf.Query {
+	if len(r) == 0 {
+		return sqlf.Sprintf(`ORDER BY archived_at DESC NULLS FIRST, created_at DESC`)
+	}
+
+	clauses := make([]*sqlf.Query, 0, len(r))
+	for _, s := range r {
+		clauses = append(clauses, sqlf.Sprintf(string(s)))
+	}
+	return sqlf.Sprintf(`ORDER BY archived_at DESC NULLS FIRST, %s`, sqlf.Join(clauses, ", "))
+}
+
+// SubscriptionsListOrderByClause is a SQL clause by which subscriptions can be sorted.
+type SubscriptionsListOrderByClause string
+
+const (
+	SubscriptionsListCreatedAt              SubscriptionsListOrderByClause = "created_at DESC"
+	SubscriptionsListActiveLicenseExpiresAt SubscriptionsListOrderByClause = "expires_at ASC NULLS LAST"
+)
 
 func (o dbSubscriptionsListOptions) sqlConditions() []*sqlf.Query {
 	conds := []*sqlf.Query{sqlf.Sprintf("TRUE")}
@@ -86,16 +110,40 @@ func (o dbSubscriptionsListOptions) sqlConditions() []*sqlf.Query {
 
 // List lists all product subscriptions that satisfy the options.
 func (s dbSubscriptions) List(ctx context.Context, opt dbSubscriptionsListOptions) ([]*dbSubscription, error) {
-	return s.list(ctx, opt.sqlConditions(), opt.LimitOffset)
+	return s.list(ctx, opt.sqlConditions(), opt.OrderBy, opt.LimitOffset)
 }
 
-func (dbSubscriptions) list(ctx context.Context, conds []*sqlf.Query, limitOffset *db.LimitOffset) ([]*dbSubscription, error) {
+func (dbSubscriptions) list(ctx context.Context, conds []*sqlf.Query, orderBy SubscriptionsListOrderBy, limitOffset *db.LimitOffset) ([]*dbSubscription, error) {
 	q := sqlf.Sprintf(`
-SELECT id, user_id, billing_subscription_id, created_at, archived_at FROM product_subscriptions
+WITH active_license_keys as (
+	SELECT product_subscription_id, active_key FROM (
+		SELECT product_subscription_id, FIRST_VALUE(license_key) over (
+			PARTITION by product_subscription_id ORDER BY created_at DESC) AS active_key
+		FROM product_licenses) AS licenses_with_active_keys
+	GROUP BY product_subscription_id, active_key
+)
+SELECT id, user_id, billing_subscription_id, created_at, archived_at, (
+	CASE WHEN active_key IS NULL THEN NULL ELSE CAST(
+		CONVERT_FROM(
+			DECODE(
+				CONVERT_FROM(
+					DECODE(
+						CONCAT(
+							TRIM(active_key),
+							REPEAT('=', MOD(4 - MOD(CHAR_LENGTH(active_key), 4), 4))),
+						'base64'),
+					'UTF-8')::json->>'info',
+				'base64'),
+			'UTF-8')::json->>'e'
+		AS TIMESTAMP WITH TIME ZONE) END
+) as expires_at
+FROM product_subscriptions
+LEFT JOIN active_license_keys ON active_license_keys.product_subscription_id = product_subscriptions.id
 WHERE (%s)
-ORDER BY archived_at DESC NULLS FIRST, created_at DESC
+%s
 %s`,
 		sqlf.Join(conds, ") AND ("),
+		orderBy.SQL(),
 		limitOffset.SQL(),
 	)
 
@@ -108,7 +156,7 @@ ORDER BY archived_at DESC NULLS FIRST, created_at DESC
 	var results []*dbSubscription
 	for rows.Next() {
 		var v dbSubscription
-		if err := rows.Scan(&v.ID, &v.UserID, &v.BillingSubscriptionID, &v.CreatedAt, &v.ArchivedAt); err != nil {
+		if err := rows.Scan(&v.ID, &v.UserID, &v.BillingSubscriptionID, &v.CreatedAt, &v.ArchivedAt, &v.ExpiresAt); err != nil {
 			return nil, err
 		}
 		results = append(results, &v)

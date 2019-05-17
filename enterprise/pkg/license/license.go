@@ -87,7 +87,9 @@ func (l Info) encode() ([]byte, error) {
 	if _, err := rand.Read(e.Nonce[:8]); err != nil {
 		return nil, err
 	}
-	return json.Marshal(e)
+	x, err := json.Marshal(e)
+	fmt.Println(x, err)
+	return x, err
 }
 
 func (l *Info) decode(data []byte) error {

@@ -459,6 +459,9 @@ func (ProductSubscriptionLicensingResolver) ProductSubscriptions(ctx context.Con
 	}
 
 	var opt dbSubscriptionsListOptions
+	opt.OrderBy = SubscriptionsListOrderBy{
+		toDBSubscriptionsListClause(args.OrderBy),
+	}
 	if accountUser != nil {
 		opt.UserID = accountUser.DatabaseID()
 	}
@@ -517,4 +520,15 @@ func (r *productSubscriptionConnection) PageInfo(ctx context.Context) (*graphqlu
 		return nil, err
 	}
 	return graphqlutil.HasNextPage(r.opt.LimitOffset != nil && len(results) > r.opt.Limit), nil
+}
+
+func toDBSubscriptionsListClause(ob string) SubscriptionsListOrderByClause {
+	switch ob {
+	case "SUBSCRIPTION_CREATED_AT":
+		return SubscriptionsListCreatedAt
+	case "SUBSCRIPTION_ACTIVE_LICENSE_EXPIRES_AT":
+		return SubscriptionsListActiveLicenseExpiresAt
+	default:
+		return ""
+	}
 }
