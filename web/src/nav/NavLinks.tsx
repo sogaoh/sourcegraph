@@ -12,6 +12,7 @@ import { SettingsCascadeProps } from '../../../shared/src/settings/settings'
 import { LinkWithIconOnlyTooltip } from '../components/LinkWithIconOnlyTooltip'
 import { WebActionsNavItems, WebCommandListPopoverButton } from '../components/shared'
 import { isDiscussionsEnabled } from '../discussions'
+import { ActivityIcon } from '../enterprise/activity/icons'
 import { ChangesIcon } from '../enterprise/changes/icons'
 import { ThreadsNavItem } from '../enterprise/threads/global/nav/ThreadsNavItem'
 import { ChecksIcon } from '../enterprise/threads/icons'
@@ -94,6 +95,14 @@ export class NavLinks extends React.PureComponent<Props> {
                                 to="/changes"
                                 text="Changes"
                                 icon={ChangesIcon}
+                                className="nav-link btn btn-link text-decoration-none"
+                            />
+                        </li>
+                        <li className="nav-item">
+                            <LinkWithIconOnlyTooltip
+                                to="/activity"
+                                text="Activity"
+                                icon={ActivityIcon}
                                 className="nav-link btn btn-link text-decoration-none"
                             />
                         </li>
