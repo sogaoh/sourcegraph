@@ -2,54 +2,92 @@ import H from 'history'
 import React from 'react'
 import { Link } from '../../../../../shared/src/components/Link'
 import { threadsQueryMatches, threadsQueryWithValues } from '../url'
+import { QueryParameterProps } from './withQueryParameter/WithQueryParameter'
 
 /** A link in {@link ListHeaderQueryLinks}. */
 export interface QueryLink {
     label: string
     queryField: string
     queryValues: string[]
-    count: number
+    removeQueryFields?: string[]
+    count?: number
     icon?: React.ComponentType<{ className?: string }>
 }
 
-interface Props {
-    /** The active query. */
-    activeQuery: string
+export const ListHeaderQueryLink: React.FunctionComponent<
+    QueryLink & Pick<QueryParameterProps, 'query'> & { className?: string; location: H.Location }
+> = ({ label, queryField, queryValues, removeQueryFields, count, icon: Icon, query, className = '', location }) => {
+    const queryFieldValues: { [name: string]: null | string[] } = { [queryField]: queryValues }
+    if (removeQueryFields) {
+        for (const f of removeQueryFields) {
+            if (f !== queryField) {
+                queryFieldValues[f] = null
+            }
+        }
+    }
+    return (
+        <Link
+            to={urlForThreadsQuery(location, threadsQueryWithValues(query, queryFieldValues))}
+            className={`${className} text-body ${
+                queryValues.every(queryValue => threadsQueryMatches(query, { [queryField]: queryValue }))
+                    ? 'active'
+                    : 'text-muted'
+            }`}
+        >
+            {Icon && <Icon className="icon-inline mr-1" />}
+            {count} {label}
+        </Link>
+    )
+}
 
+interface Props extends Pick<QueryParameterProps, 'query'> {
     /** The links to display. */
     links: QueryLink[]
 
-    location: H.Location
     className?: string
+    itemClassName?: string
+
+    location: H.Location
 }
 
 /**
- * A component with links that interact with the query that determines the contents of a list, such
- * as showing "4 open" and "3 closed".
+ * A button group with links that interact with the query that determines the contents of a list,
+ * such as showing "4 open" and "3 closed".
  */
-export const ListHeaderQueryLinks: React.FunctionComponent<Props> = ({
-    activeQuery,
+export const ListHeaderQueryLinksButtonGroup: React.FunctionComponent<Props> = ({
+    query,
+    links,
+    location,
+    className,
+    itemClassName,
+}) => (
+    <div className={`btn-group ${className}`}>
+        {links.map((linkProps, i) => (
+            <ListHeaderQueryLink {...linkProps} query={query} className={`btn ${itemClassName}`} location={location} />
+        ))}
+    </div>
+)
+
+/**
+ * A nav with links that interact with the query that determines the contents of a list, such as
+ * showing "4 open" and "3 closed".
+ */
+export const ListHeaderQueryLinksNav: React.FunctionComponent<Props> = ({
+    query,
     links,
     location,
     className = '',
+    itemClassName = '',
 }) => (
     <ul className={`nav ${className}`}>
-        {links.map(({ label, queryField, queryValues, count, icon: Icon }, i) => (
-            <li key={i} className="nav-item d-flex align-items-center">
-                <Link
-                    to={urlForThreadsQuery(
-                        location,
-                        threadsQueryWithValues(activeQuery, { [queryField]: queryValues })
-                    )}
-                    className={`nav-link text-body p-1 ${
-                        queryValues.every(queryValue => threadsQueryMatches(activeQuery, { [queryField]: queryValue }))
-                            ? 'active'
-                            : 'text-muted'
-                    }`}
-                >
-                    {Icon && <Icon className="icon-inline mr-1" />}
-                    {count} {label}
-                </Link>
+        {links.map((linkProps, i) => (
+            <li key={i} className="nav-item">
+                <ListHeaderQueryLink
+                    {...linkProps}
+                    query={query}
+                    className={`nav-link p-1 ${itemClassName}`}
+                    location={location}
+                />
             </li>
         ))}
     </ul>

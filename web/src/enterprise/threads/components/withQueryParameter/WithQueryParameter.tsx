@@ -1,13 +1,6 @@
 import H from 'history'
 import React, { useCallback } from 'react'
 
-interface Props {
-    defaultQuery?: string
-    history: H.History
-    location: H.Location
-    children: (props: QueryParameterProps) => JSX.Element | null
-}
-
 /**
  * React component props for children of {@link WithQueryParameter}.
  */
@@ -17,6 +10,13 @@ export interface QueryParameterProps {
 
     /** Called when the query changes. */
     onQueryChange: (query: string) => void
+}
+
+interface Props {
+    defaultQuery?: string
+    history: H.History
+    location: H.Location
+    children: (props: QueryParameterProps) => JSX.Element | null
 }
 
 /**

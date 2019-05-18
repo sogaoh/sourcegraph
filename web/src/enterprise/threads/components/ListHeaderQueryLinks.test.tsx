@@ -1,7 +1,7 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
 import { setLinkComponent } from '../../../../../shared/src/components/Link'
-import { ListHeaderQueryLinks } from './ListHeaderQueryLinks'
+import { ListHeaderQueryLinksNav } from './ListHeaderQueryLinks'
 
 // tslint:disable: jsx-no-lambda
 describe('ListHeaderQueryLinks', () => {
@@ -12,8 +12,8 @@ describe('ListHeaderQueryLinks', () => {
         expect(
             renderer
                 .create(
-                    <ListHeaderQueryLinks
-                        activeQuery="is:b"
+                    <ListHeaderQueryLinksNav
+                        query="is:b"
                         links={[
                             { label: 'a', queryField: 'is', queryValues: ['a'], count: 1 },
                             { label: 'b', queryField: 'is', queryValues: ['b'], count: 2 },

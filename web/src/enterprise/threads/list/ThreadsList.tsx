@@ -2,19 +2,33 @@ import { LoadingSpinner } from '@sourcegraph/react-loading-spinner'
 import H from 'history'
 import AlertOutlineIcon from 'mdi-react/AlertOutlineIcon'
 import CheckIcon from 'mdi-react/CheckIcon'
-import React, { useMemo, useState } from 'react'
-import * as GQL from '../../../../../shared/src/graphql/schema'
-import { asError, ErrorLike, isErrorLike } from '../../../../../shared/src/util/errors'
-import { fetchDiscussionThreads } from '../../../discussions/backend'
-import { ListHeaderQueryLinks } from '../components/ListHeaderQueryLinks'
+import React from 'react'
+import { isErrorLike } from '../../../../../shared/src/util/errors'
+import { ListHeaderQueryLinksNav } from '../components/ListHeaderQueryLinks'
 import { QueryParameterProps } from '../components/withQueryParameter/WithQueryParameter'
+import {
+    ThreadsQueryResultProps,
+    WithThreadsQueryResults,
+} from '../components/withThreadsQueryResults/WithThreadsQueryResults'
 import { nounForThreadKind, ThreadKind } from '../util'
-import { ThreadsListHeader } from './ThreadsListHeader'
 import { ThreadsListHeaderFilterButtonDropdown } from './ThreadsListHeaderFilterButtonDropdown'
 import { ThreadsListItem } from './ThreadsListItem'
 
-interface Props extends QueryParameterProps {
+export interface ThreadsListContext {
+    /**
+     * Whether each item should have a checkbox.
+     */
+    itemCheckboxes?: boolean
+}
+
+interface Props extends QueryParameterProps, ThreadsListContext {
     kind: ThreadKind
+
+    /**
+     * Renders the list header.
+     */
+    listHeader?: (props: Props & ThreadsQueryResultProps) => JSX.Element | null
+
     history: H.History
     location: H.Location
 }
@@ -24,39 +38,34 @@ const LOADING: 'loading' = 'loading'
 /**
  * The list of threads with a header.
  */
-export const ThreadsList: React.FunctionComponent<Props> = ({ kind, query, onQueryChange, ...props }) => {
-    const [threadsOrError, setThreadsOrError] = useState<typeof LOADING | GQL.IDiscussionThreadConnection | ErrorLike>(
-        LOADING
-    )
-
-    // tslint:disable-next-line: no-floating-promises because fetchDiscussionThreads never throws
-    useMemo(async () => {
-        try {
-            setThreadsOrError(await fetchDiscussionThreads({ query }).toPromise())
-        } catch (err) {
-            setThreadsOrError(asError(err))
-        }
-    }, [query])
-
-    return (
-        <div className="threads-list">
-            {isErrorLike(threadsOrError) ? (
-                <div className="alert alert-danger mt-2">{threadsOrError.message}</div>
-            ) : (
-                <>
-                    <ThreadsListHeader {...props} kind={kind} query={query} onQueryChange={onQueryChange} />
+export const ThreadsList: React.FunctionComponent<Props> = ({
+    kind,
+    listHeader,
+    itemCheckboxes,
+    query,
+    onQueryChange,
+    ...props
+}) => (
+    <WithThreadsQueryResults query={query}>
+        {({ threadsOrError }) => (
+            <div className="threads-list">
+                {isErrorLike(threadsOrError) ? (
+                    <div className="alert alert-danger mt-2">{threadsOrError.message}</div>
+                ) : (
                     <div className="card">
                         <div className="card-header d-flex align-items-center justify-content-between font-weight-normal">
-                            <div className="form-check mx-2">
-                                <input
-                                    className="form-check-input position-static"
-                                    type="checkbox"
-                                    aria-label="Select item"
-                                />
-                            </div>
+                            {itemCheckboxes && (
+                                <div className="form-check mx-2">
+                                    <input
+                                        className="form-check-input position-static"
+                                        type="checkbox"
+                                        aria-label="Select item"
+                                    />
+                                </div>
+                            )}
                             {threadsOrError !== LOADING ? (
-                                <ListHeaderQueryLinks
-                                    activeQuery={query}
+                                <ListHeaderQueryLinksNav
+                                    query={query}
                                     links={[
                                         {
                                             label: 'open',
@@ -74,7 +83,7 @@ export const ThreadsList: React.FunctionComponent<Props> = ({ kind, query, onQue
                                         },
                                     ]}
                                     location={props.location}
-                                    className="flex-1"
+                                    className="flex-1 nav"
                                 />
                             ) : (
                                 <div className="flex-1" />
@@ -119,13 +128,18 @@ export const ThreadsList: React.FunctionComponent<Props> = ({ kind, query, onQue
                         ) : (
                             <ul className="list-group list-group-flush">
                                 {threadsOrError.nodes.map((thread, i) => (
-                                    <ThreadsListItem key={i} location={props.location} thread={thread} />
+                                    <ThreadsListItem
+                                        key={i}
+                                        location={props.location}
+                                        thread={thread}
+                                        itemCheckboxes={itemCheckboxes}
+                                    />
                                 ))}
                             </ul>
                         )}
                     </div>
-                </>
-            )}
-        </div>
-    )
-}
+                )}
+            </div>
+        )}
+    </WithThreadsQueryResults>
+)

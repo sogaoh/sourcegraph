@@ -8,7 +8,7 @@ import React, { useMemo, useState } from 'react'
 import { of } from 'rxjs'
 import * as GQL from '../../../../../../shared/src/graphql/schema'
 import { asError, ErrorLike, isErrorLike } from '../../../../../../shared/src/util/errors'
-import { ListHeaderQueryLinks } from '../../components/ListHeaderQueryLinks'
+import { ListHeaderQueryLinksNav } from '../../components/ListHeaderQueryLinks'
 import { ThreadSettings } from '../../settings'
 import { PullRequestStatusItem } from './PullRequestStatusItem'
 import { ThreadStatusItemsListHeaderFilterButtonDropdown } from './ThreadStatusItemsListHeaderFilterButtonDropdown'
@@ -168,8 +168,8 @@ export const ThreadStatusItemsList: React.FunctionComponent<Props> = ({ thread, 
                         <div className="font-weight-normal flex-1 d-flex align-items-center">
                             <span className="mr-2">{threadSettings.createPullRequests ? '50%' : '0%'} complete</span>
                             {itemsOrError !== LOADING && !isErrorLike(itemsOrError) && (
-                                <ListHeaderQueryLinks
-                                    activeQuery={'TODO!(sqs)'}
+                                <ListHeaderQueryLinksNav
+                                    query={'TODO!(sqs)'}
                                     links={[
                                         {
                                             label: 'pending',

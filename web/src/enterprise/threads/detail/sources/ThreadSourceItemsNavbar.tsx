@@ -6,7 +6,7 @@ import FilterIcon from 'mdi-react/FilterIcon'
 import React, { useState } from 'react'
 import { MultilineTextField } from '../../../../../../shared/src/components/multilineTextField/MultilineTextField'
 import * as GQL from '../../../../../../shared/src/graphql/schema'
-import { ListHeaderQueryLinks } from '../../components/ListHeaderQueryLinks'
+import { ListHeaderQueryLinksNav } from '../../components/ListHeaderQueryLinks'
 import { QueryParameterProps } from '../../components/withQueryParameter/WithQueryParameter'
 import { ThreadSourceItemsListFilter } from './ThreadSourceItemsListFilter'
 import { ThreadSourceItemsListHeaderFilterButtonDropdown } from './ThreadSourceItemsListHeaderFilterButtonDropdown'
@@ -106,8 +106,8 @@ export const ThreadSourceItemsNavbar: React.FunctionComponent<Props> = ({
                 )}
                 <div className="col-md-6 d-flex align-items-center">
                     <span className="mr-1">Show:</span>
-                    <ListHeaderQueryLinks
-                        activeQuery={'TODO!(sqs)'}
+                    <ListHeaderQueryLinksNav
+                        query={'TODO!(sqs)'}
                         links={[
                             {
                                 label: 'open',

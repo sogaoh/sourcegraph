@@ -4,8 +4,9 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import * as GQL from '../../../../../shared/src/graphql/schema'
 import { ThreadStatusIcon } from '../components/threadStatus/ThreadStatusIcon'
+import { ThreadsListContext } from './ThreadsList'
 
-interface Props {
+interface Props extends ThreadsListContext {
     thread: GQL.IDiscussionThread
     location: H.Location
 }
@@ -13,16 +14,18 @@ interface Props {
 /**
  * A list item for a thread in {@link ThreadsList}.
  */
-export const ThreadsListItem: React.FunctionComponent<Props> = ({ thread, location }) => (
+export const ThreadsListItem: React.FunctionComponent<Props> = ({ thread, itemCheckboxes, location }) => (
     <li className="list-group-item p-2">
         <div className="d-flex align-items-start">
-            <div
-                className="form-check mx-2"
-                /* tslint:disable-next-line:jsx-ban-props */
-                style={{ marginTop: '2px' /* stylelint-disable-line declaration-property-unit-whitelist */ }}
-            >
-                <input className="form-check-input position-static" type="checkbox" aria-label="Select item" />
-            </div>
+            {itemCheckboxes && (
+                <div
+                    className="form-check mx-2"
+                    /* tslint:disable-next-line:jsx-ban-props */
+                    style={{ marginTop: '2px' /* stylelint-disable-line declaration-property-unit-whitelist */ }}
+                >
+                    <input className="form-check-input position-static" type="checkbox" aria-label="Select item" />
+                </div>
+            )}
             <ThreadStatusIcon thread={thread} className={`small mr-2 mt-1`} />
             <div className="flex-1">
                 <h3 className="d-flex align-items-center mb-0">
