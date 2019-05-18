@@ -8,9 +8,6 @@ import { ActivationProps } from '../../../../shared/src/components/activation/Ac
 interface Props extends ActivationProps {
     /** Hide the "help" icon and dropdown. */
     noHelp?: boolean
-
-    /** Never show the "Search" button label. */
-    noLabel?: boolean
 }
 
 interface State {
@@ -35,7 +32,6 @@ export class SearchButton extends React.Component<Props, State> {
             <div className="search-button d-flex text-nowrap">
                 <button className="btn btn-primary search-button__btn" type="submit" onClick={this.onClick}>
                     <SearchIcon className="icon-inline" />
-                    {!this.props.noLabel && <span className="search-button__label">Search</span>}
                 </button>
                 <Dropdown isOpen={this.state.isOpen} toggle={this.toggleIsOpen} className="d-flex">
                     {!this.props.noHelp && (
