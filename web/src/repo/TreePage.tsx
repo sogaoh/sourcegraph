@@ -291,7 +291,7 @@ export class TreePage extends React.PureComponent<Props, State> {
                                         autoFocus={true}
                                         placeholder=""
                                     />
-                                    <SearchButton activation={this.props.activation} />
+                                    <SearchButton />
                                 </Form>
                             </section>
                             <TreeEntriesSection
@@ -369,7 +369,8 @@ export class TreePage extends React.PureComponent<Props, State> {
         submitSearch(
             this.props.history,
             this.getQueryPrefix() + this.state.query,
-            this.props.filePath ? 'tree' : 'repo'
+            this.props.filePath ? 'tree' : 'repo',
+            this.props.activation
         )
     }
 

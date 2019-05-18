@@ -5,7 +5,7 @@ import * as React from 'react'
 import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap'
 import { ActivationProps } from '../../../../shared/src/components/activation/Activation'
 
-interface Props extends ActivationProps {
+interface Props {
     /** Hide the "help" icon and dropdown. */
     noHelp?: boolean
 }
@@ -15,22 +15,17 @@ interface State {
 }
 
 /**
- * A search button with a dropdown with related links.
+ * A search button with a dropdown with related links. It must be wrapped in a form whose onSubmit
+ * handler performs the search.
  */
 export class SearchButton extends React.Component<Props, State> {
     public state: State = { isOpen: false }
-
-    private onClick = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
-        if (this.props.activation) {
-            this.props.activation.update({ DidSearch: true })
-        }
-    }
 
     public render(): JSX.Element | null {
         const docsURLPrefix = window.context.sourcegraphDotComMode ? 'https://docs.sourcegraph.com' : '/help'
         return (
             <div className="search-button d-flex text-nowrap">
-                <button className="btn btn-primary search-button__btn" type="submit" onClick={this.onClick}>
+                <button className="btn btn-primary search-button__btn" type="submit">
                     <SearchIcon className="icon-inline" />
                 </button>
                 <Dropdown isOpen={this.state.isOpen} toggle={this.toggleIsOpen} className="d-flex">
