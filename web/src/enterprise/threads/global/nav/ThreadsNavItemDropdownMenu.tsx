@@ -1,3 +1,4 @@
+import AddIcon from 'mdi-react/AddIcon'
 import React, { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { DropdownItem, DropdownMenu } from 'reactstrap'
@@ -32,17 +33,8 @@ export const ThreadsNavItemDropdownMenu: React.FunctionComponent<Props> = ({ cla
 
     return (
         <DropdownMenu right={true} className={className}>
-            <Link to="/threads" className="dropdown-item d-flex align-items-center justify-content-between">
-                Active
-                <span className="badge badge-secondary">57</span>
-            </Link>
-            <Link to="/threads" className="dropdown-item d-flex align-items-center justify-content-between">
-                &nbsp;&nbsp;&nbsp; New matches
-                <span className="badge badge-secondary">2</span>
-            </Link>
-            <Link to="/threads" className="dropdown-item d-flex align-items-center justify-content-between">
-                &nbsp;&nbsp;&nbsp; In-progress changes
-                <span className="badge badge-secondary">3</span>
+            <Link to="/threads/-/new" className="dropdown-item d-flex align-items-center">
+                <AddIcon className="icon-inline mr-1" /> Start new thread
             </Link>
             <DropdownItem divider={true} />
             {threadsOrError === LOADING ? (
@@ -53,7 +45,7 @@ export const ThreadsNavItemDropdownMenu: React.FunctionComponent<Props> = ({ cla
                 !isErrorLike(threadsOrError) && (
                     <>
                         <DropdownItem header={true} className="py-1">
-                            Recent
+                            Recent threads
                         </DropdownItem>
                         {threadsOrError.nodes.slice(0, MAX_THREADS).map(thread => (
                             <Link key={thread.id} to={thread.url} className="dropdown-item text-truncate">
@@ -63,10 +55,6 @@ export const ThreadsNavItemDropdownMenu: React.FunctionComponent<Props> = ({ cla
                     </>
                 )
             )}
-            <DropdownItem divider={true} />
-            <Link to="/threads/-/new" className="dropdown-item">
-                Start new thread
-            </Link>
         </DropdownMenu>
     )
 }

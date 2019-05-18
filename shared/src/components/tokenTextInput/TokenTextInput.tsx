@@ -3,7 +3,7 @@ import TextareaAutosize from 'react-textarea-autosize'
 import { MultilineTextField } from '../multilineTextField/MultilineTextField'
 // import { DisplayToken, Tokenizer } from 'tokenizer.js'
 
-interface Props {
+interface Props extends Pick<React.HTMLProps<HTMLTextAreaElement>, 'className' | 'onFocus' | 'onBlur'> {
     className?: string
     value: string
     placeholder?: string
@@ -14,7 +14,13 @@ interface Props {
  * A text input field that may contain a mixture of tokens and non-tokenized text.
  */
 // tslint:disable: jsx-no-lambda
-export const TokenTextInput: React.FunctionComponent<Props> = ({ className = '', value, placeholder, onChange }) => {
+export const TokenTextInput: React.FunctionComponent<Props> = ({
+    className = '',
+    value,
+    placeholder,
+    onChange,
+    ...props
+}) => {
     const [element, setElement] = useState<HTMLDivElement | null>(null)
 
     // const tokenizer = useMemo(() => {
@@ -42,6 +48,7 @@ export const TokenTextInput: React.FunctionComponent<Props> = ({ className = '',
 
     return (
         <MultilineTextField
+            {...props}
             className={`token-text-input ${className}`}
             style={{ resize: 'none' }}
             value={value}

@@ -10,12 +10,13 @@ import { Link } from 'react-router-dom'
 export const LinkWithIconOnlyTooltip: React.FunctionComponent<{
     to: string
     text: string
+    tooltip?: string
     icon: React.ComponentType<{ className?: string }>
     className?: string
-}> = ({ to, text, icon: Icon, className = '' }) => (
+}> = ({ to, text, tooltip = text, icon: Icon, className = '' }) => (
     <Link to={to} className={`${className} d-flex align-items-center`}>
-        <Icon className="icon-inline d-lg-none" data-tooltip={text} />
-        <Icon className="icon-inline d-none d-lg-inline-block" />
-        <span className="d-none d-lg-inline-block ml-1">{text}</span>
+        <Icon className="icon-inline d-xl-none" data-tooltip={tooltip} />
+        <Icon className="icon-inline d-none d-xl-inline-block" />
+        <span className="d-none d-xl-inline-block ml-1">{text}</span>
     </Link>
 )

@@ -4,7 +4,6 @@ import { ActivationProps } from '../../../../shared/src/components/activation/Ac
 import { Form } from '../../components/Form'
 import { submitSearch } from '../helpers'
 import { QueryInput } from './QueryInput'
-import { SearchButton } from './SearchButton'
 
 interface Props extends ActivationProps {
     location: H.Location
@@ -36,7 +35,6 @@ export const SearchNavbarItem: React.FunctionComponent<Props> = props => {
                 autoFocus={autoFocus ? 'cursor-at-end' : undefined}
                 hasGlobalQueryBehavior={true}
             />
-            <SearchButton />
         </Form>
     )
 }

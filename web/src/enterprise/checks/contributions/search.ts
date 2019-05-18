@@ -1,16 +1,17 @@
 import H from 'history'
 import { Subscription, Unsubscribable } from 'rxjs'
-import { parseContributionExpressions } from '../../../../shared/src/api/client/services/contribution'
-import { ContributableMenu } from '../../../../shared/src/api/protocol'
-import { ExtensionsControllerProps } from '../../../../shared/src/extensions/controller'
-import * as GQL from '../../../../shared/src/graphql/schema'
-import { createThread } from '../../discussions/backend'
-import { parseSearchURLQuery } from '../../search'
+import { parseContributionExpressions } from '../../../../../shared/src/api/client/services/contribution'
+import { ContributableMenu } from '../../../../../shared/src/api/protocol'
+import { ExtensionsControllerProps } from '../../../../../shared/src/extensions/controller'
+import { createThread } from '../../../discussions/backend'
+import { parseSearchURLQuery } from '../../../search'
 
 /**
- * Registers contributions for checks-related functionality.
+ * Registers contributions for checks functionality related to search.
+ *
+ * @internal
  */
-export function registerChecksContributions(
+export function registerChecksSearchContributions(
     args: Parameters<typeof registerSearchContextBarActions>[0]
 ): Unsubscribable {
     const subscriptions = new Subscription()

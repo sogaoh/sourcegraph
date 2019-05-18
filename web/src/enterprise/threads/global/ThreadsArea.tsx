@@ -15,7 +15,8 @@ const NotFoundPage: React.FunctionComponent = () => (
 )
 
 /**
- * Properties passed to all page components in the threads area.
+ * Properties passed to all page components in the threads area (and derived areas, such as checks
+ * and codemods).
  */
 export interface ThreadsAreaContext extends ExtensionsControllerProps {
     kind: ThreadKind

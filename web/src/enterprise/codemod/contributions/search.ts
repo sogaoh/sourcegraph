@@ -1,34 +1,22 @@
 import H from 'history'
 import { Subscription, Unsubscribable } from 'rxjs'
-import { ContributableMenu } from '../../../../shared/src/api/protocol'
-import { TabsWithURLViewStatePersistence } from '../../../../shared/src/components/Tabs'
-import { ExtensionsControllerProps } from '../../../../shared/src/extensions/controller'
-import * as GQL from '../../../../shared/src/graphql/schema'
-import { createThread } from '../../discussions/backend'
-import { parseSearchURLQuery } from '../../search'
-import { queryWithReplacementText } from './query'
-import { parseContributionExpressions } from '../../../../shared/src/api/client/services/contribution'
-
-/**
- * Whether the experimental code modification feature is enabled.
- *
- * To enable this, run `localStorage.codemodExp=true;location.reload()` in your browser's JavaScript
- * console.
- */
-export const USE_CODEMOD = localStorage.getItem('codemodExp') !== null
+import { parseContributionExpressions } from '../../../../../shared/src/api/client/services/contribution'
+import { ContributableMenu } from '../../../../../shared/src/api/protocol'
+import { TabsWithURLViewStatePersistence } from '../../../../../shared/src/components/Tabs'
+import { ExtensionsControllerProps } from '../../../../../shared/src/extensions/controller'
+import * as GQL from '../../../../../shared/src/graphql/schema'
+import { createThread } from '../../../discussions/backend'
+import { parseSearchURLQuery } from '../../../search'
+import { queryWithReplacementText } from '../query'
 
 export const CODEMOD_PANEL_VIEW_ID = 'codemod'
 
-export function registerCodemodContributions({
+export function registerCodemodSearchContributions({
     history,
     extensionsController,
 }: {
     history: H.History
 } & ExtensionsControllerProps<'services'>): Unsubscribable {
-    if (!USE_CODEMOD) {
-        return { unsubscribe: () => void 0 }
-    }
-
     const subscriptions = new Subscription()
 
     const REPLACE_ID = 'codemod.search.replace'
@@ -41,6 +29,8 @@ export function registerCodemodContributions({
                     const params = new URLSearchParams(history.location.search)
                     params.set('q', queryWithReplacementText(params.get('q') || '', text))
                     history.push({
+                        // TODO!(sqs):why is this commented out/necessary?
+                        //
                         // ...TabsWithURLViewStatePersistence.urlForTabID(history.location, CODEMOD_PANEL_VIEW_ID),
                         search: `${params}`,
                     })

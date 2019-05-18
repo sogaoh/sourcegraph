@@ -14,7 +14,7 @@ import { isSettingsValid, SettingsCascadeProps } from '../../../../shared/src/se
 import { TelemetryProps } from '../../../../shared/src/telemetry/telemetryService'
 import { ErrorLike, isErrorLike } from '../../../../shared/src/util/errors'
 import { PageTitle } from '../../components/PageTitle'
-import { CodemodPanelViewRegistration } from '../../enterprise/codemod/CodemodPanelView'
+import { CodemodPanelViewRegistration } from '../../enterprise/codemod/panel/CodemodPanelView'
 import { Settings } from '../../schema/settings.schema'
 import { ThemeProps } from '../../theme'
 import { EventLogger } from '../../tracking/eventLogger'

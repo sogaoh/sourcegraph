@@ -5,7 +5,6 @@
     max-height: 80%;
     display: flex;
     align-items: flex-start;
-    justify-content: space-between;
     width: 100%;
     z-index: $zindex-sticky + 1; // on top of all sticky elements
     &--bg {
@@ -47,7 +46,8 @@
     }
 
     &__search-box-container {
-        min-width: 18rem;
+        min-width: 12rem;
+        max-width: 30rem;
         flex: 1 0 auto;
         margin-right: 0.25rem;
         display: flex;

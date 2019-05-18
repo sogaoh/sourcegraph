@@ -127,6 +127,7 @@ export class GlobalNavbar extends React.PureComponent<Props, State> {
                         )}
                     </>
                 )}
+                <div className="flex-1" />
                 {!this.state.authRequired && <NavLinks {...this.props} showDotComMarketing={showDotComMarketing} />}
             </div>
         )

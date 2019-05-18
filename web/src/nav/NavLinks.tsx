@@ -1,4 +1,5 @@
 import * as H from 'history'
+import BellIcon from 'mdi-react/BellIcon'
 import * as React from 'react'
 import { Subscription } from 'rxjs'
 import { ContributableMenu } from '../../../shared/src/api/protocol'
@@ -12,10 +13,10 @@ import { SettingsCascadeProps } from '../../../shared/src/settings/settings'
 import { LinkWithIconOnlyTooltip } from '../components/LinkWithIconOnlyTooltip'
 import { WebActionsNavItems, WebCommandListPopoverButton } from '../components/shared'
 import { isDiscussionsEnabled } from '../discussions'
-import { ActivityIcon } from '../enterprise/activity/icons'
 import { ChangesIcon } from '../enterprise/changes/icons'
+import { ChecksIcon } from '../enterprise/checks/icons'
+import { CodemodIcon } from '../enterprise/codemod/icons'
 import { ThreadsNavItem } from '../enterprise/threads/global/nav/ThreadsNavItem'
-import { ChecksIcon } from '../enterprise/threads/icons'
 import { KeybindingsProps } from '../keybindings'
 import { ThemePreferenceProps, ThemeProps } from '../theme'
 import { EventLoggerProps } from '../tracking/eventLogger'
@@ -80,30 +81,39 @@ export class NavLinks extends React.PureComponent<Props> {
                     // TODO!(sqs): only show these on enterprise
                     <>
                         <li className="nav-item">
-                            <ThreadsNavItem />
+                            <LinkWithIconOnlyTooltip
+                                to="/notifications"
+                                text="Notifications"
+                                icon={BellIcon}
+                                className="nav-link btn btn-link px-3 text-decoration-none"
+                            />
                         </li>
                         <li className="nav-item">
                             <LinkWithIconOnlyTooltip
                                 to="/checks"
                                 text="Checks"
+                                tooltip="Checks (alerts & automation)"
                                 icon={ChecksIcon}
-                                className="nav-link btn btn-link text-decoration-none"
+                                className="nav-link btn btn-link px-3 text-decoration-none"
                             />
                         </li>
                         <li className="nav-item">
+                            <LinkWithIconOnlyTooltip
+                                to="/codemods"
+                                text="Codemods"
+                                icon={CodemodIcon}
+                                className="nav-link btn btn-link px-3 text-decoration-none"
+                            />
+                        </li>
+                        <li className="nav-item">
+                            <ThreadsNavItem className="px-3" />
+                        </li>
+                        <li className="nav-item d-none">
                             <LinkWithIconOnlyTooltip
                                 to="/changes"
                                 text="Changes"
                                 icon={ChangesIcon}
-                                className="nav-link btn btn-link text-decoration-none"
-                            />
-                        </li>
-                        <li className="nav-item">
-                            <LinkWithIconOnlyTooltip
-                                to="/activity"
-                                text="Activity"
-                                icon={ActivityIcon}
-                                className="nav-link btn btn-link text-decoration-none"
+                                className="nav-link btn btn-link px-3 text-decoration-none"
                             />
                         </li>
                     </>
@@ -140,14 +150,6 @@ export class NavLinks extends React.PureComponent<Props> {
                         )}
                     </>
                 )}
-                {this.props.location.pathname !== '/welcome' && (
-                    <WebCommandListPopoverButton
-                        {...this.props}
-                        className="nav-item"
-                        menu={ContributableMenu.CommandPalette}
-                        toggleVisibilityKeybinding={this.props.keybindings.commandPalette}
-                    />
-                )}
                 {this.props.authenticatedUser && (
                     <li className="nav-item">
                         <UserNavItem
@@ -157,6 +159,14 @@ export class NavLinks extends React.PureComponent<Props> {
                             showDiscussions={isDiscussionsEnabled(this.props.settingsCascade)}
                         />
                     </li>
+                )}
+                {this.props.location.pathname !== '/welcome' && (
+                    <WebCommandListPopoverButton
+                        {...this.props}
+                        className="nav-item"
+                        menu={ContributableMenu.CommandPalette}
+                        toggleVisibilityKeybinding={this.props.keybindings.commandPalette}
+                    />
                 )}
             </ul>
         )
