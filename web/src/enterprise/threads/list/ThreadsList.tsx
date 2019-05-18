@@ -7,20 +7,14 @@ import * as GQL from '../../../../../shared/src/graphql/schema'
 import { asError, ErrorLike, isErrorLike } from '../../../../../shared/src/util/errors'
 import { fetchDiscussionThreads } from '../../../discussions/backend'
 import { ListHeaderQueryLinks } from '../components/ListHeaderQueryLinks'
+import { QueryParameterProps } from '../components/withQueryParameter/WithQueryParameter'
 import { nounForThreadKind, ThreadKind } from '../util'
 import { ThreadsListHeader } from './ThreadsListHeader'
 import { ThreadsListHeaderFilterButtonDropdown } from './ThreadsListHeaderFilterButtonDropdown'
 import { ThreadsListItem } from './ThreadsListItem'
 
-interface Props {
+interface Props extends QueryParameterProps {
     kind: ThreadKind
-
-    /** The threads query. */
-    query: string
-
-    /** Called when the threads query changes. */
-    onQueryChange: (query: string) => void
-
     history: H.History
     location: H.Location
 }

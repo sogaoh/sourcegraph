@@ -7,18 +7,13 @@ import React, { useState } from 'react'
 import { MultilineTextField } from '../../../../../../shared/src/components/multilineTextField/MultilineTextField'
 import * as GQL from '../../../../../../shared/src/graphql/schema'
 import { ListHeaderQueryLinks } from '../../components/ListHeaderQueryLinks'
+import { QueryParameterProps } from '../../components/withQueryParameter/WithQueryParameter'
 import { ThreadSourceItemsListFilter } from './ThreadSourceItemsListFilter'
 import { ThreadSourceItemsListHeaderFilterButtonDropdown } from './ThreadSourceItemsListHeaderFilterButtonDropdown'
 
-interface Props {
+interface Props extends QueryParameterProps {
     thread: Pick<GQL.IDiscussionThread, 'title' | 'id'>
     items: GQL.IDiscussionThreadTargetConnection
-
-    /** The thread source items query. */
-    query: string
-
-    /** Called when the thread source items query changes. */
-    onQueryChange: (query: string) => void
 
     includeThreadInfo: boolean
     className?: string

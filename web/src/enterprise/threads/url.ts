@@ -27,6 +27,12 @@ export function threadsQueryMatches(query: string, values: { [field: string]: st
     return true
 }
 
+/** Returns the URL to the threads query. */
+export function urlToThreadsQuery(query: string): string {
+    const params = new URLSearchParams({ q: query })
+    return `/threads?${params.toString()}`
+}
+
 interface Token {
     field?: string
     value: string

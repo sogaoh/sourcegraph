@@ -4,46 +4,40 @@ import { Route, RouteComponentProps, Switch } from 'react-router'
 import { ExtensionsControllerProps } from '../../../../../shared/src/extensions/controller'
 import { HeroPage } from '../../../components/HeroPage'
 import { ThreadsAreaContext } from '../../threads/global/ThreadsArea'
-import { CodemodsOverviewPage } from '../overview/CodemodsOverviewPage'
+import { ChecksOverviewPage } from '../overview/ChecksOverviewPage'
 
 const NotFoundPage: React.FunctionComponent = () => (
     <HeroPage icon={MapSearchIcon} title="404: Not Found" subtitle={`Sorry, the requested page was not found.`} />
 )
 
 /**
- * Properties passed to all page components in the codemods area.
+ * Properties passed to all page components in the checks area.
  */
-export interface CodemodsAreaContext extends ThreadsAreaContext {}
+export interface ChecksAreaContext extends ThreadsAreaContext {}
 
 export interface ThreadsAreaProps
-    extends Pick<CodemodsAreaContext, 'isLightTheme'>,
+    extends Pick<ChecksAreaContext, 'isLightTheme'>,
         RouteComponentProps<{}>,
         ExtensionsControllerProps {}
 
 /**
- * The global codemods area.
+ * The global checks area.
  */
-export const CodemodsArea: React.FunctionComponent<ThreadsAreaProps> = ({ match, ...props }) => {
-    const context: CodemodsAreaContext = {
+export const ChecksArea: React.FunctionComponent<ThreadsAreaProps> = ({ match, ...props }) => {
+    const context: ChecksAreaContext = {
         ...props,
-        kind: 'codemod',
+        kind: 'check',
     }
 
     return (
-        <div className="codemods-area area--vertical pt-0">
+        <div className="checks-area area--vertical pt-0">
             <Switch>
                 <Route
                     path={match.url}
                     key="hardcoded-key" // see https://github.com/ReactTraining/react-router/issues/4578#issuecomment-334489490
                     exact={true}
                     // tslint:disable-next-line:jsx-no-lambda
-                    render={routeComponentProps => <CodemodsOverviewPage {...routeComponentProps} {...context} />}
-                />
-                <Route
-                    path={`${match.url}/new`}
-                    key="hardcoded-key" // see https://github.com/ReactTraining/react-router/issues/4578#issuecomment-334489490
-                    // tslint:disable-next-line:jsx-no-lambda
-                    render={routeComponentProps => <CodemodsNewCheckPage {...routeComponentProps} {...context} />}
+                    render={routeComponentProps => <ChecksOverviewPage {...routeComponentProps} {...context} />}
                 />
                 <Route key="hardcoded-key" component={NotFoundPage} />
             </Switch>

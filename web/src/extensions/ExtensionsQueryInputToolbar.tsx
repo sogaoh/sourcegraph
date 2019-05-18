@@ -1,15 +1,10 @@
 import React from 'react'
 import { ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap'
 import { EXTENSION_CATEGORIES } from '../../../shared/src/schema/extensionSchema'
+import { QueryParameterProps } from '../enterprise/threads/components/withQueryParameter/WithQueryParameter'
 import { extensionsQuery } from './extension/extension'
 
-interface Props {
-    /** The current extensions registry list query. */
-    query: string
-
-    /** Called when the query changes as a result of user interaction with this component. */
-    onQueryChange: (query: string) => void
-}
+interface Props extends QueryParameterProps {}
 
 type DropdownMenuID = 'categories' | 'options'
 

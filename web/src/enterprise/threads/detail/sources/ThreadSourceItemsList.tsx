@@ -9,6 +9,7 @@ import { gql } from '../../../../../../shared/src/graphql/graphql'
 import * as GQL from '../../../../../../shared/src/graphql/schema'
 import { asError, createAggregateError, ErrorLike, isErrorLike } from '../../../../../../shared/src/util/errors'
 import { queryGraphQL } from '../../../../backend/graphql'
+import { QueryParameterProps } from '../../components/withQueryParameter/WithQueryParameter'
 import { ThreadSettings } from '../../settings'
 import { TextDocumentLocationSourceItem, ThreadSourceItem } from './TextDocumentLocationSourceItem'
 import { ThreadSourceItemsNavbar } from './ThreadSourceItemsNavbar'
@@ -176,15 +177,9 @@ const querySourceItems = (threadID: GQL.ID): Promise<GQL.IDiscussionThreadTarget
         )
         .toPromise()
 
-interface Props extends ExtensionsControllerProps {
+interface Props extends ExtensionsControllerProps, QueryParameterProps {
     thread: Pick<GQL.IDiscussionThread, 'id' | 'title'>
     threadSettings: ThreadSettings
-
-    /** The thread source items query. */
-    query: string
-
-    /** Called when the thread source items query changes. */
-    onQueryChange: (query: string) => void
 
     history: H.History
     location: H.Location

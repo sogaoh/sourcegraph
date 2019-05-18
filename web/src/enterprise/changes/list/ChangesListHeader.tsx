@@ -4,14 +4,9 @@ import SettingsIcon from 'mdi-react/SettingsIcon'
 import TagOutlineIcon from 'mdi-react/TagOutlineIcon'
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { QueryParameterProps } from '../../threads/components/withQueryParameter/WithQueryParameter'
 
-interface Props {
-    /** The changes query. */
-    query: string
-
-    /** Called when the query changes. */
-    onQueryChange: (query: string) => void
-
+interface Props extends QueryParameterProps {
     location: H.Location
     className?: string
 }

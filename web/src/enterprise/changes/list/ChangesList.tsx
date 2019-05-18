@@ -8,6 +8,7 @@ import { asError, ErrorLike, isErrorLike } from '../../../../../shared/src/util/
 import { fetchSearchResultStats, search } from '../../../search/backend'
 import { ChangesListHeader } from './ChangesListHeader'
 import { ChangesListItem } from './ChangesListItem'
+import { QueryParameterProps } from '../../threads/components/withQueryParameter/WithQueryParameter'
 
 const queryChanges = async ({
     query,
@@ -17,13 +18,7 @@ const queryChanges = async ({
         .pipe(first())
         .toPromise()
 
-interface Props extends ExtensionsControllerProps<'services'> {
-    /** The changes query. */
-    query: string
-
-    /** Called when the query changes. */
-    onQueryChange: (query: string) => void
-
+interface Props extends ExtensionsControllerProps<'services'>, QueryParameterProps {
     history: H.History
     location: H.Location
     isLightTheme: boolean

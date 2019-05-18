@@ -5,6 +5,7 @@ import { first, take } from 'rxjs/operators'
 import { ExtensionsControllerProps } from '../../../../../shared/src/extensions/controller'
 import * as GQL from '../../../../../shared/src/graphql/schema'
 import { asError, ErrorLike, isErrorLike } from '../../../../../shared/src/util/errors'
+import { QueryParameterProps } from '../../threads/components/withQueryParameter/WithQueryParameter'
 
 interface GQLIEvent {}
 
@@ -13,13 +14,7 @@ const queryEvents = async ({ query, extensionsController }: { query: string }): 
         .pipe(first())
         .toPromise()
 
-interface Props extends ExtensionsControllerProps<'services'> {
-    /** The events query. */
-    query: string
-
-    /** Called when the query events. */
-    onQueryChange: (query: string) => void
-
+interface Props extends ExtensionsControllerProps<'services'>, QueryParameterProps {
     history: H.History
     location: H.Location
     isLightTheme: boolean

@@ -4,17 +4,12 @@ import SettingsIcon from 'mdi-react/SettingsIcon'
 import TagOutlineIcon from 'mdi-react/TagOutlineIcon'
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { QueryParameterProps } from '../components/withQueryParameter/WithQueryParameter'
 import { nounForThreadKind, ThreadKind } from '../util'
 import { ThreadsListFilter } from './ThreadsListFilter'
 
-interface Props {
+interface Props extends QueryParameterProps {
     kind: ThreadKind
-
-    /** The threads query. */
-    query: string
-
-    /** Called when the threads query changes. */
-    onQueryChange: (query: string) => void
 
     location: H.Location
 }
