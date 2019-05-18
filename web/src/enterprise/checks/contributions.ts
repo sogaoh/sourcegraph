@@ -1,5 +1,6 @@
 import H from 'history'
 import { Subscription, Unsubscribable } from 'rxjs'
+import { parseContributionExpressions } from '../../../../shared/src/api/client/services/contribution'
 import { ContributableMenu } from '../../../../shared/src/api/protocol'
 import { ExtensionsControllerProps } from '../../../../shared/src/extensions/controller'
 import * as GQL from '../../../../shared/src/graphql/schema'
@@ -45,7 +46,7 @@ function registerSearchContextBarActions({
     )
     subscriptions.add(
         extensionsController.services.contribution.registerContributions({
-            contributions: {
+            contributions: parseContributionExpressions({
                 actions: [
                     {
                         id: SAVE_ID,
@@ -63,7 +64,7 @@ function registerSearchContextBarActions({
                 menus: {
                     [ContributableMenu.SearchResultsToolbar]: [{ action: SAVE_ID }],
                 },
-            },
+            }),
         })
     )
 

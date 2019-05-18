@@ -7,6 +7,7 @@ import * as GQL from '../../../../shared/src/graphql/schema'
 import { createThread } from '../../discussions/backend'
 import { parseSearchURLQuery } from '../../search'
 import { queryWithReplacementText } from './query'
+import { parseContributionExpressions } from '../../../../shared/src/api/client/services/contribution'
 
 /**
  * Whether the experimental code modification feature is enabled.
@@ -49,7 +50,7 @@ export function registerCodemodContributions({
     )
     subscriptions.add(
         extensionsController.services.contribution.registerContributions({
-            contributions: {
+            contributions: parseContributionExpressions({
                 actions: [
                     {
                         id: REPLACE_ID,
@@ -67,7 +68,7 @@ export function registerCodemodContributions({
                 menus: {
                     [ContributableMenu.SearchResultsToolbar]: [{ action: REPLACE_ID }],
                 },
-            },
+            }),
         })
     )
 
@@ -91,7 +92,7 @@ export function registerCodemodContributions({
     )
     subscriptions.add(
         extensionsController.services.contribution.registerContributions({
-            contributions: {
+            contributions: parseContributionExpressions({
                 actions: [
                     {
                         id: SAVE_ID,
@@ -109,7 +110,7 @@ export function registerCodemodContributions({
                 menus: {
                     [ContributableMenu.SearchResultsToolbar]: [{ action: SAVE_ID }],
                 },
-            },
+            }),
         })
     )
 
