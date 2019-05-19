@@ -2,8 +2,8 @@ import H from 'history'
 import MessageOutlineIcon from 'mdi-react/MessageOutlineIcon'
 import React from 'react'
 import { Link } from 'react-router-dom'
-import * as GQL from '../../../../../shared/src/graphql/schema'
-import { ThreadStatusIcon } from '../../threads/components/threadStatus/ThreadStatusIcon'
+import * as GQL from '../../../../../../shared/src/graphql/schema'
+import { ThreadStatusIcon } from '../../../threads/components/threadStatus/ThreadStatusIcon'
 
 interface Props {
     thread: GQL.IDiscussionThread

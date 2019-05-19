@@ -4,7 +4,7 @@ import { PageTitle } from '../../../components/PageTitle'
 import { WithQueryParameter } from '../../threads/components/withQueryParameter/WithQueryParameter'
 import { threadsQueryWithValues } from '../../threads/url'
 import { CodemodsAreaContext } from '../global/CodemodsArea'
-import { CodemodThreadsList } from '../list/CodemodThreadsList'
+import { CodemodThreadsList } from '../threads/list/CodemodThreadsList'
 
 interface Props extends CodemodsAreaContext {
     history: H.History

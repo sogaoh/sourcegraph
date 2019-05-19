@@ -1,8 +1,8 @@
 import H from 'history'
 import React from 'react'
-import { QueryParameterProps } from '../../threads/components/withQueryParameter/WithQueryParameter'
-import { ThreadsList } from '../../threads/list/ThreadsList'
-import { ThreadKind } from '../../threads/util'
+import { QueryParameterProps } from '../../../threads/components/withQueryParameter/WithQueryParameter'
+import { ThreadsList } from '../../../threads/list/ThreadsList'
+import { ThreadKind } from '../../../threads/util'
 import { CodemodThreadsListHeader } from './CodemodThreadsListHeader'
 
 interface Props extends QueryParameterProps {

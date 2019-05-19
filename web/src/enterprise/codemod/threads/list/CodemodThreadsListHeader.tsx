@@ -1,9 +1,9 @@
 import H from 'history'
 import React from 'react'
-import { ListHeaderQueryLinksButtonGroup } from '../../threads/components/ListHeaderQueryLinks'
-import { QueryParameterProps } from '../../threads/components/withQueryParameter/WithQueryParameter'
-import { ThreadsListFilter } from '../../threads/list/ThreadsListFilter'
-import { ThreadKind } from '../../threads/util'
+import { ListHeaderQueryLinksButtonGroup } from '../../../threads/components/ListHeaderQueryLinks'
+import { QueryParameterProps } from '../../../threads/components/withQueryParameter/WithQueryParameter'
+import { ThreadsListFilter } from '../../../threads/list/ThreadsListFilter'
+import { ThreadKind } from '../../../threads/util'
 
 interface Props extends QueryParameterProps {
     kind: ThreadKind

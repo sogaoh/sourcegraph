@@ -5,6 +5,7 @@ import { ExtensionsControllerProps } from '../../../../../shared/src/extensions/
 import { HeroPage } from '../../../components/HeroPage'
 import { ThreadsAreaContext } from '../../threads/global/ThreadsArea'
 import { CodemodsOverviewPage } from '../overview/CodemodsOverviewPage'
+import { NewCodemodThreadPage } from '../threads/new/NewCodemodThreadPage'
 
 const NotFoundPage: React.FunctionComponent = () => (
     <HeroPage icon={MapSearchIcon} title="404: Not Found" subtitle={`Sorry, the requested page was not found.`} />
@@ -43,7 +44,7 @@ export const CodemodsArea: React.FunctionComponent<ThreadsAreaProps> = ({ match,
                     path={`${match.url}/new`}
                     key="hardcoded-key" // see https://github.com/ReactTraining/react-router/issues/4578#issuecomment-334489490
                     // tslint:disable-next-line:jsx-no-lambda
-                    render={routeComponentProps => <CodemodsNewCheckPage {...routeComponentProps} {...context} />}
+                    render={routeComponentProps => <NewCodemodThreadPage {...routeComponentProps} {...context} />}
                 />
                 <Route key="hardcoded-key" component={NotFoundPage} />
             </Switch>

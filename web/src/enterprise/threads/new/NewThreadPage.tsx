@@ -21,9 +21,13 @@ const LOADING: 'loading' = 'loading'
 /**
  * Shows a form to create a new thread.
  */
-// tslint:disable: jsx-no-lambda
 export const NewThreadPage: React.FunctionComponent<Props> = ({ kind, history }) => {
     const [title, setTitle] = useState('')
+    const onTitleChange = useCallback<React.ChangeEventHandler<HTMLInputElement>>(
+        e => setTitle(e.currentTarget.value),
+        [title]
+    )
+
     const [creationOrError, setCreationOrError] = useState<null | typeof LOADING | GQL.IDiscussionThread | ErrorLike>(
         null
     )
@@ -41,6 +45,7 @@ export const NewThreadPage: React.FunctionComponent<Props> = ({ kind, history })
         },
         [title, creationOrError]
     )
+
     return (
         <>
             <PageTitle title="New extension" />
@@ -49,7 +54,7 @@ export const NewThreadPage: React.FunctionComponent<Props> = ({ kind, history })
                 <Form onSubmit={onSubmit}>
                     <ThreadTitleFormGroup
                         value={title}
-                        onChange={e => setTitle(e.currentTarget.value)}
+                        onChange={onTitleChange}
                         disabled={creationOrError === LOADING}
                     />
                     <button type="submit" disabled={creationOrError === LOADING} className="btn btn-primary">
