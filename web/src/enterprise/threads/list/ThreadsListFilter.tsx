@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap'
+import SearchIcon from 'mdi-react/SearchIcon'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Form } from '../../../components/Form'
 
 interface Props {
@@ -9,6 +9,8 @@ interface Props {
     /** Called when the value changes. */
     onChange: (value: string) => void
 
+    beforeInputFragment?: React.ReactFragment
+
     className?: string
 }
 
@@ -16,10 +18,20 @@ interface Props {
  * The filter control (dropdown and input field) for a list of threads.
  */
 // tslint:disable: jsx-no-lambda
-export const ThreadsListFilter: React.FunctionComponent<Props> = ({ value, onChange, className }) => {
+export const ThreadsListFilter: React.FunctionComponent<Props> = ({
+    value,
+    onChange,
+    beforeInputFragment,
+    className,
+}) => {
     const [uncommittedValue, setUncommittedValue] = useState(value)
     useEffect(() => setUncommittedValue(value), [value])
-    const [isOpen, setIsOpen] = useState(false)
+
+    const [isFocused, setIsFocused] = useState(false)
+    const onFocus = useCallback(() => setIsFocused(true), [isFocused])
+    const onBlur = useCallback(() => setIsFocused(false), [isFocused])
+
+    const prependSearchIcon = !beforeInputFragment
 
     return (
         <Form
@@ -29,26 +41,27 @@ export const ThreadsListFilter: React.FunctionComponent<Props> = ({ value, onCha
                 onChange(uncommittedValue)
             }}
         >
-            <div className="input-group">
-                <div className="input-group-prepend">
-                    {/* tslint:disable-next-line:jsx-no-lambda */}
-                    <ButtonDropdown isOpen={isOpen} toggle={() => setIsOpen(!isOpen)}>
-                        <DropdownToggle caret={true}>Filter</DropdownToggle>
-                        <DropdownMenu>
-                            <DropdownItem>Open</DropdownItem>
-                            <DropdownItem>Assigned to you</DropdownItem>
-                            <DropdownItem>Acted on by you</DropdownItem>
-                            <DropdownItem>Closed</DropdownItem>
-                        </DropdownMenu>
-                    </ButtonDropdown>
-                </div>
+            <div
+                className={`input-group ${prependSearchIcon ? 'bg-form-control border rounded' : ''} ${
+                    isFocused ? 'form-control-focus' : ''
+                }`}
+            >
+                {beforeInputFragment || (
+                    <div className="input-group-prepend">
+                        <span className="input-group-text border-0 pl-2 pr-1 bg-transparent">
+                            <SearchIcon className="icon-inline" />
+                        </span>
+                    </div>
+                )}
                 <input
                     type="text"
-                    className="form-control"
+                    className={`form-control ${prependSearchIcon ? 'shadow-none border-0 rounded-0 pl-1' : ''}`}
                     aria-label="Filter threads"
                     autoCapitalize="off"
                     value={uncommittedValue}
                     onChange={e => setUncommittedValue(e.currentTarget.value)}
+                    onFocus={onFocus}
+                    onBlur={onBlur}
                 />
             </div>
         </Form>

@@ -6,12 +6,8 @@ import React from 'react'
 import { isErrorLike } from '../../../../../shared/src/util/errors'
 import { ListHeaderQueryLinksNav } from '../components/ListHeaderQueryLinks'
 import { QueryParameterProps } from '../components/withQueryParameter/WithQueryParameter'
-import {
-    ThreadsQueryResultProps,
-    WithThreadsQueryResults,
-} from '../components/withThreadsQueryResults/WithThreadsQueryResults'
+import { WithThreadsQueryResults } from '../components/withThreadsQueryResults/WithThreadsQueryResults'
 import { nounForThreadKind, ThreadKind } from '../util'
-import { ThreadsListHeaderFilterButtonDropdown } from './ThreadsListHeaderFilterButtonDropdown'
 import { ThreadsListItem } from './ThreadsListItem'
 
 export interface ThreadsListContext {
@@ -25,9 +21,9 @@ interface Props extends QueryParameterProps, ThreadsListContext {
     kind: ThreadKind
 
     /**
-     * Renders the list header.
+     * A React fragment to render on the right side of the list header.
      */
-    listHeader?: (props: Props & ThreadsQueryResultProps) => JSX.Element | null
+    rightHeaderFragment?: React.ReactFragment
 
     history: H.History
     location: H.Location
@@ -40,7 +36,7 @@ const LOADING: 'loading' = 'loading'
  */
 export const ThreadsList: React.FunctionComponent<Props> = ({
     kind,
-    listHeader,
+    rightHeaderFragment,
     itemCheckboxes,
     query,
     onQueryChange,
@@ -88,38 +84,7 @@ export const ThreadsList: React.FunctionComponent<Props> = ({
                             ) : (
                                 <div className="flex-1" />
                             )}
-                            <div>
-                                <ThreadsListHeaderFilterButtonDropdown
-                                    header="Filter by who's assigned"
-                                    items={['sqs (you)', 'ekonev', 'jleiner', 'ziyang', 'kting7', 'ffranksena']}
-                                >
-                                    Assignee
-                                </ThreadsListHeaderFilterButtonDropdown>
-                                <ThreadsListHeaderFilterButtonDropdown
-                                    header="Filter by label"
-                                    items={[
-                                        'perf',
-                                        'tech-lead',
-                                        'services',
-                                        'bugs',
-                                        'build',
-                                        'noisy',
-                                        'security',
-                                        'appsec',
-                                        'infosec',
-                                        'compliance',
-                                        'docs',
-                                    ]}
-                                >
-                                    Labels
-                                </ThreadsListHeaderFilterButtonDropdown>
-                                <ThreadsListHeaderFilterButtonDropdown
-                                    header="Sort by"
-                                    items={['Priority', 'Most recently updated', 'Least recently updated']}
-                                >
-                                    Sort
-                                </ThreadsListHeaderFilterButtonDropdown>
-                            </div>
+                            {rightHeaderFragment && <div>{rightHeaderFragment}</div>}
                         </div>
                         {threadsOrError === LOADING ? (
                             <LoadingSpinner className="mt-2" />

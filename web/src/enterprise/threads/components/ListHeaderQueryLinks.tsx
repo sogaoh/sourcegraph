@@ -15,8 +15,26 @@ export interface QueryLink {
 }
 
 export const ListHeaderQueryLink: React.FunctionComponent<
-    QueryLink & Pick<QueryParameterProps, 'query'> & { className?: string; location: H.Location }
-> = ({ label, queryField, queryValues, removeQueryFields, count, icon: Icon, query, className = '', location }) => {
+    QueryLink &
+        Pick<QueryParameterProps, 'query'> & {
+            className?: string
+            activeClassName?: string
+            inactiveClassName?: string
+            location: H.Location
+        }
+> = ({
+    label,
+    queryField,
+    queryValues,
+    removeQueryFields,
+    count,
+    icon: Icon,
+    query,
+    className = '',
+    activeClassName = 'active',
+    inactiveClassName = 'text-muted',
+    location,
+}) => {
     const queryFieldValues: { [name: string]: null | string[] } = { [queryField]: queryValues }
     if (removeQueryFields) {
         for (const f of removeQueryFields) {
@@ -28,10 +46,10 @@ export const ListHeaderQueryLink: React.FunctionComponent<
     return (
         <Link
             to={urlForThreadsQuery(location, threadsQueryWithValues(query, queryFieldValues))}
-            className={`${className} text-body ${
+            className={`${className} ${
                 queryValues.every(queryValue => threadsQueryMatches(query, { [queryField]: queryValue }))
-                    ? 'active'
-                    : 'text-muted'
+                    ? activeClassName
+                    : inactiveClassName
             }`}
         >
             {Icon && <Icon className="icon-inline mr-1" />}
@@ -46,6 +64,8 @@ interface Props extends Pick<QueryParameterProps, 'query'> {
 
     className?: string
     itemClassName?: string
+    itemActiveClassName?: string
+    itemInactiveClassName?: string
 
     location: H.Location
 }
@@ -58,12 +78,22 @@ export const ListHeaderQueryLinksButtonGroup: React.FunctionComponent<Props> = (
     query,
     links,
     location,
-    className,
-    itemClassName,
+    className = '',
+    itemClassName = '',
+    itemActiveClassName = '',
+    itemInactiveClassName = '',
 }) => (
     <div className={`btn-group ${className}`}>
         {links.map((linkProps, i) => (
-            <ListHeaderQueryLink {...linkProps} query={query} className={`btn ${itemClassName}`} location={location} />
+            <ListHeaderQueryLink
+                key={i}
+                {...linkProps}
+                query={query}
+                className={`btn ${itemClassName}`}
+                activeClassName={itemActiveClassName}
+                inactiveClassName={itemInactiveClassName}
+                location={location}
+            />
         ))}
     </div>
 )
@@ -78,6 +108,8 @@ export const ListHeaderQueryLinksNav: React.FunctionComponent<Props> = ({
     location,
     className = '',
     itemClassName = '',
+    itemActiveClassName = '',
+    itemInactiveClassName = '',
 }) => (
     <ul className={`nav ${className}`}>
         {links.map((linkProps, i) => (
@@ -86,6 +118,8 @@ export const ListHeaderQueryLinksNav: React.FunctionComponent<Props> = ({
                     {...linkProps}
                     query={query}
                     className={`nav-link p-1 ${itemClassName}`}
+                    activeClassName={itemActiveClassName}
+                    inactiveClassName={itemInactiveClassName}
                     location={location}
                 />
             </li>

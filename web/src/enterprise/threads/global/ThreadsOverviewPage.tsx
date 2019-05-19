@@ -5,6 +5,7 @@ import { PageTitle } from '../../../components/PageTitle'
 import { WithQueryParameter } from '../components/withQueryParameter/WithQueryParameter'
 import { ThreadsList } from '../list/ThreadsList'
 import { ThreadsListHeader } from '../list/ThreadsListHeader'
+import { ThreadsListHeaderFilterButtonDropdown } from '../list/ThreadsListHeaderFilterButtonDropdown'
 import { threadsQueryWithValues } from '../url'
 import { ThreadsAreaContext } from './ThreadsArea'
 
@@ -27,7 +28,46 @@ export const ThreadsOverviewPage: React.FunctionComponent<Props> = props => (
             {({ query, onQueryChange }) => (
                 <>
                     <ThreadsListHeader {...props} query={query} onQueryChange={onQueryChange} />
-                    <ThreadsList {...props} query={query} onQueryChange={onQueryChange} />
+                    <ThreadsList
+                        {...props}
+                        query={query}
+                        onQueryChange={onQueryChange}
+                        rightHeaderFragment={
+                            <>
+                                {' '}
+                                <ThreadsListHeaderFilterButtonDropdown
+                                    header="Filter by who's assigned"
+                                    items={['sqs (you)', 'ekonev', 'jleiner', 'ziyang', 'kting7', 'ffranksena']}
+                                >
+                                    Assignee
+                                </ThreadsListHeaderFilterButtonDropdown>
+                                <ThreadsListHeaderFilterButtonDropdown
+                                    header="Filter by label"
+                                    items={[
+                                        'perf',
+                                        'tech-lead',
+                                        'services',
+                                        'bugs',
+                                        'build',
+                                        'noisy',
+                                        'security',
+                                        'appsec',
+                                        'infosec',
+                                        'compliance',
+                                        'docs',
+                                    ]}
+                                >
+                                    Labels
+                                </ThreadsListHeaderFilterButtonDropdown>
+                                <ThreadsListHeaderFilterButtonDropdown
+                                    header="Sort by"
+                                    items={['Priority', 'Most recently updated', 'Least recently updated']}
+                                >
+                                    Sort
+                                </ThreadsListHeaderFilterButtonDropdown>
+                            </>
+                        }
+                    />
                 </>
             )}
         </WithQueryParameter>

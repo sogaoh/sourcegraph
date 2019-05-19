@@ -15,16 +15,16 @@ export const QueryInput3: React.FunctionComponent<Props> = ({ value, onChange, c
     return (
         <div
             className={`query-input3 ${
-                isFocused ? 'query-input3--focus' : ''
+                isFocused ? 'form-control-focus' : ''
             } input-group border rounded align-items-start ${className}`}
         >
             <div className="input-group-prepend">
-                <span className="input-group-text border-0 px-1 bg-transparent">
+                <span className="input-group-text border-0 pl-2 pr-1 bg-transparent">
                     <SearchIcon className="icon-inline" />
                 </span>
             </div>
             <TokenTextInput
-                className="query-input3__input form-control border-0 rounded-0 query-input2__input e2e-query-input pl-1"
+                className="form-control shadow-none border-0 rounded-0 query-input2__input e2e-query-input pl-1"
                 value={value}
                 onChange={onChange}
                 onFocus={onFocus}

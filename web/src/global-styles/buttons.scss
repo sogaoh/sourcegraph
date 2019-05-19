@@ -54,13 +54,13 @@
     color: $link-color !important;
 }
 .theme-dark {
-    .btn.btn-outline-link {
+    .btn-outline-link {
         @include button-outline-variant($secondary);
     }
 }
 // stylelint-disable-next-line no-duplicate-selectors
 .theme-light {
-    .btn.btn-outline-link {
+    .btn-outline-link {
         @include button-outline-variant($secondary-light);
     }
 }

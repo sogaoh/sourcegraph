@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 import { QueryParameterProps } from '../components/withQueryParameter/WithQueryParameter'
 import { nounForThreadKind, ThreadKind } from '../util'
 import { ThreadsListFilter } from './ThreadsListFilter'
+import { ThreadsListButtonDropdownFilter } from './ThreadsListFilterButtonDropdown'
 
 interface Props extends QueryParameterProps {
     kind: ThreadKind
@@ -21,7 +22,15 @@ export const ThreadsListHeader: React.FunctionComponent<Props> = ({ kind, query,
     <div className="d-flex justify-content-between align-items-start">
         <div className="flex-1 mr-5 d-flex">
             <div className="flex-1 mb-3 mr-2">
-                <ThreadsListFilter value={query} onChange={onQueryChange} />
+                <ThreadsListFilter
+                    value={query}
+                    onChange={onQueryChange}
+                    beforeInputFragment={
+                        <div className="input-group-prepend">
+                            <ThreadsListButtonDropdownFilter />
+                        </div>
+                    }
+                />
             </div>
             <div className="btn-group mb-3 mr-4" role="group">
                 <Link to={`${location.pathname}/-/manage/activity`} className="btn btn-outline-link">

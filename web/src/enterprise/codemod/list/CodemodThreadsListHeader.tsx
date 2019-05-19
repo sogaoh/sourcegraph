@@ -11,7 +11,7 @@ interface Props extends QueryParameterProps {
     location: H.Location
 }
 
-const QUERY_FIELDS_IN_USE = ['involves', 'author', 'mentions', 'created']
+const QUERY_FIELDS_IN_USE = ['involves', 'author', 'mentions']
 
 /**
  * The header for the list of codemod threads.
@@ -24,7 +24,7 @@ export const CodemodThreadsListHeader: React.FunctionComponent<Props> = ({ kind,
                 links={[
                     {
                         label: 'Involved',
-                        queryField: 'involved',
+                        queryField: 'involves',
                         queryValues: ['sqs'], // TODO!(sqs): un-hardcode
                         removeQueryFields: QUERY_FIELDS_IN_USE,
                     },
@@ -40,15 +40,11 @@ export const CodemodThreadsListHeader: React.FunctionComponent<Props> = ({ kind,
                         queryValues: ['sqs'], // TODO!(sqs): un-hardcode
                         removeQueryFields: QUERY_FIELDS_IN_USE,
                     },
-                    {
-                        label: 'Recent',
-                        queryField: 'sort',
-                        queryValues: ['created'], // TODO!(sqs): see if this works
-                        removeQueryFields: QUERY_FIELDS_IN_USE,
-                    },
                 ]}
                 location={location}
-                itemClassName="btn-outline-link font-weight-bold"
+                itemClassName="font-weight-bold px-3"
+                itemActiveClassName="btn-primary"
+                itemInactiveClassName="btn-outline-link"
             />
         </div>
         <div className="flex-1 mb-3">
