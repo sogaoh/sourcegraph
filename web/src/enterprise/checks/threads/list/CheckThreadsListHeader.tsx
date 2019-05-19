@@ -14,9 +14,9 @@ interface Props extends QueryParameterProps {
 const QUERY_FIELDS_IN_USE = ['involves', 'author', 'mentions']
 
 /**
- * The header for the list of codemod threads.
+ * The header for the list of check threads.
  */
-export const CodemodThreadsListHeader: React.FunctionComponent<Props> = ({ kind, query, onQueryChange, location }) => (
+export const CheckThreadsListHeader: React.FunctionComponent<Props> = ({ kind, query, onQueryChange, location }) => (
     <div className="d-flex justify-content-between align-items-start">
         <div className="flex-1 mr-5">
             <ListHeaderQueryLinksButtonGroup

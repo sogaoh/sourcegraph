@@ -97,15 +97,7 @@ export class NavLinks extends React.PureComponent<Props> {
                                 className="nav-link btn btn-link px-3 text-decoration-none"
                             />
                         </li>
-                        <li className="nav-item">
-                            <LinkWithIconOnlyTooltip
-                                to="/codemods"
-                                text="Codemods"
-                                icon={CodemodIcon}
-                                className="nav-link btn btn-link px-3 text-decoration-none"
-                            />
-                        </li>
-                        <li className="nav-item">
+                        <li className="nav-item mr-1">
                             <ThreadsNavItem className="px-3" />
                         </li>
                         <li className="nav-item d-none">
@@ -150,6 +142,14 @@ export class NavLinks extends React.PureComponent<Props> {
                         )}
                     </>
                 )}
+                {this.props.location.pathname !== '/welcome' && (
+                    <WebCommandListPopoverButton
+                        {...this.props}
+                        className="nav-item"
+                        menu={ContributableMenu.CommandPalette}
+                        toggleVisibilityKeybinding={this.props.keybindings.commandPalette}
+                    />
+                )}
                 {this.props.authenticatedUser && (
                     <li className="nav-item">
                         <UserNavItem
@@ -159,14 +159,6 @@ export class NavLinks extends React.PureComponent<Props> {
                             showDiscussions={isDiscussionsEnabled(this.props.settingsCascade)}
                         />
                     </li>
-                )}
-                {this.props.location.pathname !== '/welcome' && (
-                    <WebCommandListPopoverButton
-                        {...this.props}
-                        className="nav-item"
-                        menu={ContributableMenu.CommandPalette}
-                        toggleVisibilityKeybinding={this.props.keybindings.commandPalette}
-                    />
                 )}
             </ul>
         )

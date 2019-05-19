@@ -3,7 +3,7 @@ import React from 'react'
 import { QueryParameterProps } from '../../../threads/components/withQueryParameter/WithQueryParameter'
 import { ThreadsList } from '../../../threads/list/ThreadsList'
 import { ThreadKind } from '../../../threads/util'
-import { CodemodThreadsListHeader } from './CodemodThreadsListHeader'
+import { CheckThreadsListHeader } from './CheckThreadsListHeader'
 
 interface Props extends QueryParameterProps {
     kind: ThreadKind
@@ -12,11 +12,11 @@ interface Props extends QueryParameterProps {
 }
 
 /**
- * The list of codemod threads.
+ * The list of check threads.
  */
-export const CodemodThreadsList: React.FunctionComponent<Props> = props => (
+export const CheckThreadsList: React.FunctionComponent<Props> = props => (
     <>
-        <CodemodThreadsListHeader {...props} />
+        <CheckThreadsListHeader {...props} />
         <ThreadsList {...props} itemCheckboxes={false} />
     </>
 )

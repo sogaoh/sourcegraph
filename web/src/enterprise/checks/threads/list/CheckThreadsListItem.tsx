@@ -11,9 +11,9 @@ interface Props {
 }
 
 /**
- * A list item for a codemod thread in {@link CodemodThreadsList}.
+ * A list item for a check thread in {@link CheckThreadsList}.
  */
-export const CodemodThreadsListItem: React.FunctionComponent<Props> = ({ thread }) => (
+export const CheckThreadsListItem: React.FunctionComponent<Props> = ({ thread }) => (
     <li className="list-group-item p-3">
         <div className="d-flex align-items-start">
             <ThreadStatusIcon thread={thread} className={`small mr-2 mt-1`} />

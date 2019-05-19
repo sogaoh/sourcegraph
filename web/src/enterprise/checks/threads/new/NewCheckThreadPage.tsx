@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom'
 import { ModalPage } from '../../../../components/ModalPage'
 import { PageTitle } from '../../../../components/PageTitle'
 
-const CODEMOD_TYPES: {
+const CHECK_TYPES: {
     id: string
     title: string
     description?: string
@@ -21,59 +21,73 @@ const CODEMOD_TYPES: {
     iconColor?: string
 }[] = [
     {
-        id: 'codemod.textFindReplace',
-        title: 'Text replacement',
-        description: 'Replace a string with another string',
+        id: 'check.textFindReplace',
+        title: 'Text find/replace',
+        description: 'Find a string (and optionally replace it with another string)',
         icon: AlphabeticalIcon,
     },
     {
-        id: 'codemod.upgradeNpmDependency',
+        id: 'check.upgradeNpmDependency',
         title: 'Upgrade npm dependency',
         description: 'Ensure an npm dependency is at a specific version',
         icon: NpmIcon,
         iconColor: '#cb3837',
     },
     {
-        id: 'codemod.typescriptTSConfig',
+        id: 'check.npmPackageAllowlist',
+        title: 'Require approval for new npm package dependencies',
+        description:
+            'Define the approved set of npm packages, find dependencies on unapproved packages, and prevent new violations',
+        icon: NpmIcon,
+        iconColor: '#cb3837',
+    },
+    {
+        id: 'check.typescriptTSConfig',
         title: 'Standardize TypeScript tsconfig.json files',
         description: "Enforce consistency among TypeScript projects' tsconfig.json files",
         icon: LanguageTypescriptIcon,
         iconColor: '#2774c3',
     },
     {
-        id: 'codemod.dockerfileLint',
+        id: 'check.dockerfileLint',
         title: 'Dockerfile lint',
         description: 'Find and fix common mistakes in Dockerfiles',
         icon: DockerIcon,
         iconColor: '#0db7ed',
     },
     {
-        id: 'codemod.goLint',
+        id: 'check.goLint',
         title: 'Go lint',
         description: 'Fix common mistakes in Go code',
         icon: LanguageGoIcon,
     },
     {
-        id: 'codemod.reactLint',
+        id: 'check.goPackageImportsAllowlist',
+        title: 'Require approval for Go package imports',
+        description: 'Find imports of unapproved Go packages and prevent new violations from being committed',
+        icon: LanguageGoIcon,
+    },
+    {
+        id: 'check.reactLint',
         title: 'React lint',
         description: 'Fix common problems in React code & migrate deprecated React code',
         icon: ReactIcon,
         iconColor: '#00d8ff',
     },
     {
-        id: 'codemod.removeDSStore',
+        id: 'check.removeDSStore',
         title: 'No macOS .DS_Store files',
         description: 'Deletes and gitignores undesired macOS temp and metadata files',
         icon: AppleFinderIcon,
     },
     {
-        id: 'codemod.removePYCFiles',
+        id: 'check.removePYCFiles',
         title: 'No *.pyc files',
         description: 'Deletes and gitignores undesired Python temp files',
         icon: LanguagePythonIcon,
     },
     {
-        id: 'codemod.removeYarnNpmTempFiles',
+        id: 'check.removeYarnNpmTempFiles',
         title: 'No undesired Yarn/npm temporary files',
         description: 'Deletes and gitignores yarn-error.log and npm-debug.log files',
         icon: DeleteSweepIcon,
@@ -82,7 +96,7 @@ const CODEMOD_TYPES: {
 
 interface Props {}
 
-export const NewCodemodThreadPage: React.FunctionComponent<Props> = () => {
+export const NewCheckThreadPage: React.FunctionComponent<Props> = () => {
     const [query, setQuery] = useState('')
     const onQueryChange = useCallback<React.ChangeEventHandler<HTMLInputElement>>(
         e => setQuery(e.currentTarget.value),
@@ -91,9 +105,9 @@ export const NewCodemodThreadPage: React.FunctionComponent<Props> = () => {
 
     return (
         <>
-            <PageTitle title="New codemod" />
+            <PageTitle title="New check" />
             <ModalPage border={false} className="justify-content-start mt-4">
-                <h2 className="mb-3">New codemod...</h2>
+                <h2 className="mb-3">New check...</h2>
                 <ul className="list-group">
                     <li className="list-group-item p-0">
                         <input
@@ -104,7 +118,7 @@ export const NewCodemodThreadPage: React.FunctionComponent<Props> = () => {
                             placeholder="Search"
                         />
                     </li>
-                    {CODEMOD_TYPES.filter(
+                    {CHECK_TYPES.filter(
                         ({ title, description }) =>
                             title.toLowerCase().includes(query.toLowerCase()) ||
                             (description && description.toLowerCase().includes(query.toLowerCase()))
