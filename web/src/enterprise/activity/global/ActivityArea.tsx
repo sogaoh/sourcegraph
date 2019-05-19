@@ -21,7 +21,7 @@ export interface EventsAreaProps extends ActivityAreaContext, RouteComponentProp
 /**
  * The global activity area.
  */
-export const EventsArea: React.FunctionComponent<EventsAreaProps> = ({ match, ...props }) => {
+export const ActivityArea: React.FunctionComponent<EventsAreaProps> = ({ match, ...props }) => {
     const context: ActivityAreaContext = {
         ...props,
     }

@@ -1,8 +1,8 @@
 import H from 'history'
 import React from 'react'
 import { ActivityAreaContext } from '../global/ActivityArea'
-import { ActivityTimeline } from './ActivityTimeline'
 import { ActivityIcon } from '../icons'
+import { ActivityTimeline } from './ActivityTimeline'
 
 interface Props extends ActivityAreaContext {
     history: H.History

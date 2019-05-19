@@ -38,12 +38,12 @@ export const enterpriseRoutes: ReadonlyArray<LayoutRouteProps> = [
         render: lazyComponent(() => import('./threads/global/ThreadsArea'), 'ThreadsArea'),
     },
     {
-        path: '/changes',
-        render: lazyComponent(() => import('./changes/global/ChangesArea'), 'ChangesArea'),
+        path: '/checks',
+        render: lazyComponent(() => import('./checks/global/ChecksArea'), 'ChecksArea'),
     },
     {
-        path: '/codemods',
-        render: lazyComponent(() => import('./codemod/global/CodemodsArea'), 'CodemodsArea'),
+        path: '/changes',
+        render: lazyComponent(() => import('./changes/global/ChangesArea'), 'ChangesArea'),
     },
     {
         path: '/activity',
